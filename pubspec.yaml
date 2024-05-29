@@ -1,0 +1,90 @@
+name: talent_lens_hub
+description: "Unlocking Potential, Illuminating Futures"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+#----------Packages-----------#
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Utility Packages
+  http:
+  intl:
+  logger:
+  url_launcher:
+
+  # Icons
+  iconsax:
+  cupertino_icons: ^1.0.6
+
+  # State Management
+  get:
+  get_storage:
+  provider:
+
+  # Product Specific
+
+
+#---------- Packages END ----------#
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  # ---------- LOCAL ASSETS ----------#
+  assets:
+    - assets/logos/
+    - assets/icons/
+    - assets/images/
+
+  # ---------- LOCAL FONTS ----------#
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 800
+
+
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
