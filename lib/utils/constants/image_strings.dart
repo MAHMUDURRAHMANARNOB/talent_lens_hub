@@ -5,9 +5,17 @@ class TImages {
 
   //App Logos
   static const String lightAppLogo = "assets/logos/light_logo.png";
-  static const String darkAppLogo = "assets/icons/dark_logo.png";
+  static const String darkAppLogo = "assets/logos/dark_logo.png";
 
   //Social logos
   static const String google = "assets/logos/google-symbol.png";
   static const String facebook = "assets/logos/facebook.png";
+
+  //Onboarding Image
+  static const String onBoardingImage1 =
+      "assets/images/onboarding_gifs/live_interview.gif";
+  static const String onBoardingImage2 =
+      "assets/images/onboarding_gifs/search_jobs.gif";
+  static const String onBoardingImage3 =
+      "assets/images/onboarding_gifs/upgrade_skill.gif";
 }

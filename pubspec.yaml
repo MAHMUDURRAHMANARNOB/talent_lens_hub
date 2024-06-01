@@ -12,20 +12,23 @@ dependencies:
     sdk: flutter
 
   # Utility Packages
-  http:
-  intl:
-  logger:
-  url_launcher:
+  http: ^1.2.1
+  intl: ^0.19.0
+  logger: ^2.3.0
+  url_launcher: ^6.2.6
+  flutter_native_splash: ^2.4.0
+  smooth_page_indicator: ^1.1.0
 
   # Icons
-  iconsax:
+  iconsax: ^0.0.8
   cupertino_icons: ^1.0.6
 
   # State Management
-  get:
-  get_storage:
-  provider:
-
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  provider: ^6.1.2
+  
+  
   # Product Specific
 
 
@@ -35,6 +38,19 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icons/light_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+  windows:
+    generate: true
+    image_path: "assets/icons/light_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
 
 flutter:
   uses-material-design: true
@@ -44,6 +60,7 @@ flutter:
     - assets/logos/
     - assets/icons/
     - assets/images/
+    - assets/images/onboarding_gifs/
 
   # ---------- LOCAL FONTS ----------#
   fonts:
