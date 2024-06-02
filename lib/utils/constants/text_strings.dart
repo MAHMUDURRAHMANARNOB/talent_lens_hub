@@ -36,6 +36,7 @@ class TTexts {
   static const String loginTitle = "Welcome";
   static const String loginSubTitle = "We are happy to see you back.";
   static const String signupTitle = "Let's create your account.";
+  static const String tContinue = "Continue";
 
   // static const String signupSubTitle = "We are happy to see you back.";
   static const String forgePasswordTitle = "ForgotPassword.";
@@ -46,6 +47,12 @@ class TTexts {
   static const String changeYourPasswordSubTitle =
       "Don't share your OTP with others.";
   static const String confirmEmail = "Verify your email address!";
+  static const String confirmEmailSubtitle = "OTP has been sent to your email.";
+
+  static const String accountCreatedTitle =
+      "Congrats! Account has been created Successfully";
+  static const String accountCreatedSubTitle =
+      "Welcome to Talent Lens Hub. Explore and be invincible ";
 
   // -- Home
   static const String homeAppbarTitle = "Good Day for Learning";

@@ -1,7 +1,9 @@
 class TImages {
   //App Icons
-  static const String lightAppIcon = "assets/icons/light_icon.png";
-  static const String darkAppIcon = "assets/icons/light_icon.png";
+  // static const String lightAppIcon = "assets/icons/light_icon.png";
+  // static const String darkAppIcon = "assets/icons/light_icon.png";
+  static const String lightAppIcon = "assets/icons/tlh.png";
+  static const String darkAppIcon = "assets/icons/tlh.png";
 
   //App Logos
   static const String lightAppLogo = "assets/logos/light_logo.png";
@@ -18,4 +20,10 @@ class TImages {
       "assets/images/onboarding_gifs/search_jobs.gif";
   static const String onBoardingImage3 =
       "assets/images/onboarding_gifs/upgrade_skill.gif";
+
+  //   Signup Verification Images
+  static const String verifyEmailImage =
+      "assets/images/animations/verify-email.gif";
+  static const String successEmailImage =
+      "assets/images/animations/success-verification.gif";
 }
