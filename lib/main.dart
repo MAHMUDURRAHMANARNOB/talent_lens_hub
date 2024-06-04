@@ -11,5 +11,5 @@ void main() {
   // TODO: Initialize FireBase
   // TODO: Initialize Authentication
 
-  runApp(TalentLensHub());
+  runApp(const TalentLensHub());
 }

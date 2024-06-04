@@ -40,6 +40,9 @@ class TTexts {
 
   // static const String signupSubTitle = "We are happy to see you back.";
   static const String forgePasswordTitle = "ForgotPassword.";
+  static const String resetPassSuccessTitle = "Congrats!";
+  static const String resetPassSuccessSubTitle =
+      "Password Reset Successfully. Now you can continue your journey";
   static const String forgePasswordSubTitle =
       "Don't worry, sometimes people can forget too. Enter your email and we will checkup and let you change the password.";
   static const String changeYourPasswordTitle =
