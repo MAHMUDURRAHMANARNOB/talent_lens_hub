@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:talent_lens_hub/features/authentication/screens/password_configuration/forget_password.dart';
 import 'package:talent_lens_hub/features/authentication/screens/signup/signup.dart';
+import 'package:talent_lens_hub/navigation_menu.dart';
 
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -72,8 +73,8 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
-                child: Text(TTexts.signIn),
+                onPressed: () => Get.to(() => const NavigationMenu()),
+                child: const Text(TTexts.signIn),
               ),
             ),
             const SizedBox(height: TSizes.spaceBtwItems),
@@ -84,7 +85,7 @@ class TLoginForm extends StatelessWidget {
                 onPressed: () {
                   Get.to(() => const SignupScreen());
                 },
-                child: Text(TTexts.createAccount),
+                child: const Text(TTexts.createAccount),
               ),
             ),
             const SizedBox(height: TSizes.spaceBtwSections),
