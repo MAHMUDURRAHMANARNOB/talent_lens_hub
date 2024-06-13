@@ -37,6 +37,8 @@ class TSizes {
   static const double borderRadiusSm = 4.0;
   static const double borderRadiusMd = 8.0;
   static const double borderRadiusLg = 12.0;
+  static const double borderRadiusXL = 24.0;
+  static const double borderRadiusXXL = 32.0;
 
   // Divider Height
   static const double dividerHeight = 1.0;
