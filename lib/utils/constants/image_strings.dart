@@ -2,8 +2,8 @@ class TImages {
   //App Icons
   // static const String lightAppIcon = "assets/icons/light_icon.png";
   // static const String darkAppIcon = "assets/icons/light_icon.png";
-  static const String lightAppIcon = "assets/icons/tlh.png";
-  static const String darkAppIcon = "assets/icons/tlh.png";
+  static const String lightAppIcon = "assets/icons/tech_owl.png";
+  static const String darkAppIcon = "assets/icons/tech_owl.png";
 
   //App Logos
   static const String lightAppLogo = "assets/logos/light_logo.png";

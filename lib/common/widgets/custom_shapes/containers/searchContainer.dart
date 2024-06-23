@@ -41,7 +41,7 @@ class TSearchContainer extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: TColors.darkerGrey,
+              color: dark ? TColors.grey : TColors.darkerGrey,
             ),
             SizedBox(
               width: TSizes.spaceBtwItems,

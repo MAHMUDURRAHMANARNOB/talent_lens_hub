@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:talent_lens_hub/utils/constants/colors.dart';
+
+import '../../../utils/helpers/helper_function.dart';
 
 class TSectionHeading extends StatelessWidget {
   const TSectionHeading({
@@ -19,6 +22,7 @@ class TSectionHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final darkMode = THelperFunction.isDarkMode(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -36,7 +40,13 @@ class TSectionHeading extends StatelessWidget {
             onPressed: () {
               onPressed;
             },
-            child: Text(buttonTitle!),
+            child: Text(
+              buttonTitle!,
+              // style: TextStyle(
+              //   color: dark ? TColors.light : TColors.dark,
+              // ),
+              style: Theme.of(context).textTheme.bodySmall!,
+            ),
           ),
       ],
     );

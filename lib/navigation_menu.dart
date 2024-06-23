@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:talent_lens_hub/utils/constants/colors.dart';
 import 'package:talent_lens_hub/utils/helpers/helper_function.dart';
 
+import 'features/courses/Screens/courses.dart';
 import 'features/home/screens/home.dart';
 
 class NavigationMenu extends StatefulWidget {
@@ -105,7 +106,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         return const HomeScreen() /*Container(color: Colors.blue)*/;
         break;
       case 1:
-        return /*CoursesScreen()*/ Container(color: Colors.green);
+        return CoursesScreen() /*Container(color: Colors.green)*/;
         break;
       case 2:
         return /*JobsScreen()*/ Container(color: Colors.orange);
