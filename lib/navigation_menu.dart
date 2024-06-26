@@ -7,6 +7,8 @@ import 'package:talent_lens_hub/utils/helpers/helper_function.dart';
 
 import 'features/courses/Screens/courses.dart';
 import 'features/home/screens/home.dart';
+import 'features/jobs/screens/job_screen.dart';
+import 'features/profile/profile_screen.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({super.key});
@@ -106,13 +108,13 @@ class _NavigationMenuState extends State<NavigationMenu> {
         return const HomeScreen() /*Container(color: Colors.blue)*/;
         break;
       case 1:
-        return CoursesScreen() /*Container(color: Colors.green)*/;
+        return const CoursesScreen() /*Container(color: Colors.green)*/;
         break;
       case 2:
-        return /*JobsScreen()*/ Container(color: Colors.orange);
+        return const JobScreen() /*Container(color: Colors.orange)*/;
         break;
       case 3:
-        return /*ProfileScreen()*/ Container(color: Colors.purple);
+        return const ProfileScreen() /*Container(color: Colors.purple)*/;
         break;
       default:
         return const Text('Select a screen');
