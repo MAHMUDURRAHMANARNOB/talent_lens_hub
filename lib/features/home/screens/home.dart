@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // Appbar
                   THomeAppBar(),
-                  const SizedBox(height: TSizes.spaceBtwSections),
+                  const SizedBox(height: TSizes.defaultSpace),
                   //   SearchBar
                   /*TSearchContainer(
                     text: 'Search',
@@ -45,8 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   //   Categories
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: TSizes.defaultSpace / 2),
+                    padding: const EdgeInsets.all(TSizes.defaultSpace / 2),
                     child: Column(
                       children: [
                         const TSectionHeading(
@@ -54,41 +53,50 @@ class _HomeScreenState extends State<HomeScreen> {
                           showActionButton: false,
                           // buttonTitle: "View All",
                           // onPressed: () {},
-                          textColor: TColors.white,
+                          textColor: TColors.primaryColor,
                         ),
                         const SizedBox(height: TSizes.spaceBtwItems),
                         //Scrollable Categories
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              // CV BUILDER
-                              PDContainer(
-                                title: "CV \nBuilder",
-                                image:
-                                    "assets/images/dashboard_images/cv_builder.png",
-                              ),
-                              SizedBox(
-                                width: TSizes.spaceBtwItems / 2,
-                              ),
-                              // Cover Letter
-                              PDContainer(
-                                title: "Cover \nLetter",
-                                image:
-                                    "assets/images/dashboard_images/cover_letter.png",
-                              ),
-                              SizedBox(
-                                width: TSizes.spaceBtwItems / 2,
-                              ),
-                              // INTERVIEW QUESTION
-                              PDContainer(
-                                title: "Interview \nQuestion",
-                                image:
-                                    "assets/images/dashboard_images/interview_question.png",
-                              ),
-                            ],
-                          ),
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            // CV BUILDER
+                            PDContainer(
+                              title: "CV Builder",
+                              image:
+                                  "assets/images/dashboard_images/cv_builder.png",
+                              bgColor: TColors.primaryColor,
+                            ),
+                            SizedBox(
+                              height: TSizes.spaceBtwItems / 2,
+                            ),
+                            // Cover Letter
+                            PDContainer(
+                              title: "Cover Letter",
+                              image:
+                                  "assets/images/dashboard_images/cover_letter.png",
+                              bgColor: TColors.secondaryColor,
+                            ),
+                            SizedBox(
+                              height: TSizes.spaceBtwItems / 2,
+                            ),
+                            // INTERVIEW QUESTION
+                            PDContainer(
+                              title: "Interview Question",
+                              image:
+                                  "assets/images/dashboard_images/interview_question.png",
+                              bgColor: Colors.indigoAccent,
+                            ),
+                            SizedBox(
+                              height: TSizes.spaceBtwItems / 2,
+                            ),
+                            PDContainer(
+                              title: "Exam Preparation",
+                              image:
+                                  "assets/images/dashboard_images/interview_question.png",
+                              bgColor: Colors.green,
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -96,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+            // SizedBox(height: TSizes.defaultSpace),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),

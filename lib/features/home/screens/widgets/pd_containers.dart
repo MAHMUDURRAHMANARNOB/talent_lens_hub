@@ -10,30 +10,41 @@ class PDContainer extends StatelessWidget {
     super.key,
     required this.image,
     required this.title,
+    required this.bgColor,
   });
 
   final String image;
   final String title;
+  final Color bgColor;
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunction.isDarkMode(context);
     return Container(
-      padding: EdgeInsets.all(TSizes.md),
+      padding: const EdgeInsets.all(TSizes.md),
+      // width: double.infinity - TSizes.md,
+      height: 80,
       decoration: BoxDecoration(
-        color: dark ? TColors.dark : TColors.light,
-        borderRadius: BorderRadius.circular(TSizes.borderRadiusXXL),
+        color: /*dark ? TColors.dark : TColors.light*/ bgColor,
+        borderRadius: BorderRadius.circular(TSizes.borderRadiusLg),
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+            child: Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+          ),
           Image.asset(
             image,
             height: 100,
             width: 100,
-          ),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ],
       ),

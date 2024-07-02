@@ -21,14 +21,14 @@ class THomeAppBar extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .labelMedium!
-                .apply(color: TColors.grey),
+                .apply(color: TColors.primaryColor),
           ),
           Text(
             TTexts.homeAppbarSubTitle,
             style: Theme.of(context)
                 .textTheme
                 .headlineSmall!
-                .apply(color: TColors.white),
+                .apply(color: TColors.primaryColor),
           ),
         ],
       ),
@@ -37,8 +37,8 @@ class THomeAppBar extends StatelessWidget {
         IconButton(
             onPressed: () {},
             icon: Icon(
-              Iconsax.setting,
-              color: TColors.white,
+              Iconsax.notification,
+              color: TColors.primaryColor,
             ))
       ],
     );

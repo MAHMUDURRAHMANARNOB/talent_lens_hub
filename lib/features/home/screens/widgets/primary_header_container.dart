@@ -14,10 +14,10 @@ class TPrimaryHeaderContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TCurvedEdgesWidget(
+    /*return TCurvedEdgesWidget(
       child: Container(
-        height: 400,
-        color: TColors.primaryColor,
+        // height: 400,
+        color: TColors.white,
         padding: const EdgeInsets.all(0),
         child: Stack(
           children: [
@@ -38,6 +38,30 @@ class TPrimaryHeaderContainer extends StatelessWidget {
             child,
           ],
         ),
+      ),
+    );*/
+    return Container(
+      // height: 500,
+      color: TColors.white,
+      padding: const EdgeInsets.all(0),
+      child: Stack(
+        children: [
+          Positioned(
+            top: -150,
+            right: -250,
+            child: TCircularContainer(
+              backgroundColor: TColors.primaryColor.withOpacity(0.1),
+            ),
+          ),
+          Positioned(
+            top: 100,
+            right: -300,
+            child: TCircularContainer(
+              backgroundColor: TColors.primaryColor.withOpacity(0.1),
+            ),
+          ),
+          child,
+        ],
       ),
     );
   }
