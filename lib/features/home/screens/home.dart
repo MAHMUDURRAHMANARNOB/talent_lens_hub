@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/ai_helper_container.dart';
+import 'package:talent_lens_hub/features/home/screens/widgets/card_container_button.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/home_app_bar.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/pd_containers.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/primary_header_container.dart';
@@ -10,6 +11,7 @@ import 'package:talent_lens_hub/utils/device/device_utility.dart';
 import '../../../common/widgets/custom_shapes/containers/searchContainer.dart';
 import '../../../common/widgets/texts/section_heading.dart';
 import '../../../utils/constants/colors.dart';
+import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
 
@@ -24,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // final dark = THelperFunction.isDarkMode(context);
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // Appbar
                   THomeAppBar(),
-                  const SizedBox(height: TSizes.defaultSpace),
+                  // SizedBox(height: TSizes.defaultSpace),
                   //   SearchBar
                   /*TSearchContainer(
                     text: 'Search',
@@ -45,56 +47,74 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   //   Categories
                   Padding(
-                    padding: const EdgeInsets.all(TSizes.defaultSpace / 2),
+                    padding: EdgeInsets.all(TSizes.defaultSpace / 2),
                     child: Column(
                       children: [
-                        const TSectionHeading(
+                        TSectionHeading(
                           title: "Personal Development",
                           showActionButton: false,
                           // buttonTitle: "View All",
                           // onPressed: () {},
                           textColor: TColors.primaryColor,
                         ),
-                        const SizedBox(height: TSizes.spaceBtwItems),
+                        SizedBox(height: TSizes.spaceBtwItems),
                         //Scrollable Categories
                         Column(
                           // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             // CV BUILDER
-                            PDContainer(
-                              title: "CV Builder",
-                              image:
-                                  "assets/images/dashboard_images/cv_builder.png",
-                              bgColor: TColors.primaryColor,
-                            ),
-                            SizedBox(
-                              height: TSizes.spaceBtwItems / 2,
-                            ),
-                            // Cover Letter
-                            PDContainer(
-                              title: "Cover Letter",
-                              image:
-                                  "assets/images/dashboard_images/cover_letter.png",
-                              bgColor: TColors.secondaryColor,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TCardContainerButton(
+                                  child: PDContainer(
+                                    title: "CV Builder",
+                                    image: TImages.cvBuilderImage,
+                                    bgColor: TColors.primaryColor,
+                                  ),
+                                ),
+                                /*SizedBox(
+                                  height: TSizes.spaceBtwItems / 2,
+                                ),*/
+                                // Cover Letter
+                                TCardContainerButton(
+                                  child: PDContainer(
+                                    title: "Cover Letter",
+                                    image: TImages.coverLetterImage,
+                                    bgColor: TColors.secondaryColor,
+                                  ),
+                                ),
+                                /*SizedBox(
+                                  height: TSizes.spaceBtwItems / 2,
+                                ),*/
+                              ],
                             ),
                             SizedBox(
                               height: TSizes.spaceBtwItems / 2,
                             ),
                             // INTERVIEW QUESTION
-                            PDContainer(
-                              title: "Interview Question",
-                              image:
-                                  "assets/images/dashboard_images/interview_question.png",
-                              bgColor: Colors.indigoAccent,
-                            ),
-                            SizedBox(
-                              height: TSizes.spaceBtwItems / 2,
-                            ),
-                            PDContainer(
-                              title: "Exam Preparation",
-                              image:
-                                  "assets/images/dashboard_images/interview_question.png",
-                              bgColor: Colors.green,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TCardContainerButton(
+                                  // color: Colors.green,
+                                  child: PDContainer(
+                                    title: "Interview \nQuestion",
+                                    image: TImages.interviewQuestionImage,
+                                    bgColor: Colors.teal,
+                                  ),
+                                ),
+                                /*SizedBox(
+                                  height: TSizes.spaceBtwItems / 2,
+                                ),*/
+                                TCardContainerButton(
+                                  child: PDContainer(
+                                    title: "Exam \nPreparation",
+                                    image: TImages.examPreparationImage,
+                                    bgColor: Colors.brown,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -106,9 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             // SizedBox(height: TSizes.defaultSpace),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
-              child: const TSectionHeading(
+              padding: EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
+              child: TSectionHeading(
                 title: "Solutions From AI",
                 showActionButton: false,
                 // buttonTitle: "View All",
@@ -117,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(TSizes.defaultSpace / 2),
+              padding: EdgeInsets.all(TSizes.defaultSpace / 2),
               child: SizedBox(
                 width: double.infinity,
                 child: Row(
@@ -149,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(TSizes.defaultSpace / 2),
+              padding: EdgeInsets.all(TSizes.defaultSpace / 2),
               child: SizedBox(
                 width: double.infinity,
                 child: Row(

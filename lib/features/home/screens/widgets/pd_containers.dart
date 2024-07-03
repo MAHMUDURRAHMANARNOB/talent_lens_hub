@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
+import 'card_container_button.dart';
 
 class PDContainer extends StatelessWidget {
   const PDContainer({
@@ -22,29 +23,31 @@ class PDContainer extends StatelessWidget {
     final dark = THelperFunction.isDarkMode(context);
     return Container(
       padding: const EdgeInsets.all(TSizes.md),
-      // width: double.infinity - TSizes.md,
-      height: 80,
+      // height: 150,
       decoration: BoxDecoration(
-        color: /*dark ? TColors.dark : TColors.light*/ bgColor,
+        color: /*dark ? TColors.dark : TColors.light*/
+            bgColor,
         borderRadius: BorderRadius.circular(TSizes.borderRadiusLg),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Image.asset(
+            image,
+            height: 100,
+            width: 150,
+          ),
+          SizedBox(height: 5),
           Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 0.0, 0.0),
             child: Text(
+              textAlign: TextAlign.center,
               title,
               style: Theme.of(context)
                   .textTheme
                   .headlineSmall
                   ?.copyWith(color: Colors.white),
             ),
-          ),
-          Image.asset(
-            image,
-            height: 100,
-            width: 100,
           ),
         ],
       ),

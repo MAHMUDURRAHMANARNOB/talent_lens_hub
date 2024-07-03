@@ -26,4 +26,14 @@ class TImages {
       "assets/images/animations/verify-email.gif";
   static const String successEmailImage =
       "assets/images/animations/success-verification.gif";
+
+  // Dashobaord card images
+  static const String cvBuilderImage =
+      "assets/images/dashboard_images/cv_builder_gif.png";
+  static const String coverLetterImage =
+      "assets/images/dashboard_images/cover_letter_big.png";
+  static const String interviewQuestionImage =
+      "assets/images/dashboard_images/interview_question_big.png";
+  static const String examPreparationImage =
+      "assets/images/dashboard_images/exam_preparation_big.png";
 }
