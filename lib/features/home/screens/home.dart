@@ -53,14 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         TSectionHeading(
                           title: "Personal Development",
                           showActionButton: false,
-                          // buttonTitle: "View All",
-                          // onPressed: () {},
                           textColor: TColors.primaryColor,
                         ),
                         SizedBox(height: TSizes.spaceBtwItems),
                         //Scrollable Categories
                         Column(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             // CV BUILDER
                             Row(
@@ -73,9 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     bgColor: TColors.primaryColor,
                                   ),
                                 ),
-                                /*SizedBox(
-                                  height: TSizes.spaceBtwItems / 2,
-                                ),*/
                                 // Cover Letter
                                 TCardContainerButton(
                                   child: PDContainer(
@@ -84,9 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     bgColor: TColors.secondaryColor,
                                   ),
                                 ),
-                                /*SizedBox(
-                                  height: TSizes.spaceBtwItems / 2,
-                                ),*/
                               ],
                             ),
                             SizedBox(
@@ -104,9 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     bgColor: Colors.teal,
                                   ),
                                 ),
-                                /*SizedBox(
-                                  height: TSizes.spaceBtwItems / 2,
-                                ),*/
                                 TCardContainerButton(
                                   child: PDContainer(
                                     title: "Exam \nPreparation",

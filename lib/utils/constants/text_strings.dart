@@ -60,4 +60,7 @@ class TTexts {
   // -- Home
   static const String homeAppbarTitle = "Good Day for Learning";
   static const String homeAppbarSubTitle = "Mahmudur Rahman";
+
+  // --Job page
+  static const String jobPageTitle = "Discover Your Perfect Job Match";
 }
