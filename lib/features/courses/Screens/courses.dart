@@ -39,11 +39,55 @@ class _CoursesScreenState extends State<CoursesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TSearchContainer(
-                text: 'Search',
-                icon: Iconsax.search_normal,
-                showBackground: true,
-                showBorder: true,
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
+                child: SearchBar(
+                  // controller: controller,
+                  backgroundColor: darkMode
+                      ? WidgetStatePropertyAll<Color?>((TColors.dark))
+                      : WidgetStatePropertyAll<Color?>((TColors.light)),
+                  hintText: "Search Course",
+                  hintStyle: WidgetStatePropertyAll<TextStyle?>(
+                      Theme.of(context).textTheme.bodySmall),
+                  padding: const WidgetStatePropertyAll<EdgeInsets>(
+                      EdgeInsets.symmetric(horizontal: TSizes.md)),
+                  onTap: () {
+                    // controller.openView();
+                  },
+                  onChanged: (_) {
+                    // controller.openView();
+                  },
+                  leading: const Icon(Iconsax.search_normal),
+                  trailing: <Widget>[
+                    /*Tooltip(
+                      message: 'Change brightness mode',
+                      child: IconButton(
+                        isSelected: darkMode,
+                        onPressed: () {
+                          setState(() {
+                            darkMode = !darkMode;
+                          });
+                        },
+                        icon: const Icon(Icons.wb_sunny_outlined),
+                        selectedIcon: const Icon(Icons.brightness_2_outlined),
+                      ),
+                    )*/
+                    Tooltip(
+                      message: 'Filter your search',
+                      child: IconButton(
+                        isSelected: darkMode,
+                        onPressed: () {
+                          // setState(() {
+                          //   darkMode = !darkMode;
+                          // });
+                        },
+                        icon: const Icon(Iconsax.filter),
+                        // selectedIcon: const Icon(Icons.brightness_2_outlined),
+                      ),
+                    )
+                  ],
+                ),
               ),
               /*Courses Category Chip Row*/
               Padding(
