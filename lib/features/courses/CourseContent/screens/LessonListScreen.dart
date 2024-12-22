@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../common/widgets/custom_shapes/containers/circular_container.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
+import '../../Provider/CourseContentProvider.dart';
 import 'LessonBoardScreen.dart';
 
 class LessonListScreen extends StatefulWidget {
   final String courseTitle;
+  final int courseCategoryId;
 
-  const LessonListScreen({super.key, required this.courseTitle});
+  const LessonListScreen(
+      {super.key, required this.courseTitle, required this.courseCategoryId});
 
   @override
   State<LessonListScreen> createState() => _LessonListScreenState();
 }
 
 class _LessonListScreenState extends State<LessonListScreen> {
+  final CourseContentProvider courseContentProvider = CourseContentProvider();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    /*return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -107,6 +114,165 @@ class _LessonListScreenState extends State<LessonListScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );*/
+    return Scaffold(
+      appBar: AppBar(title: Text('Course Content')),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FutureBuilder<void>(
+              future: courseContentProvider
+                  .fetchCourseContent(widget.courseCategoryId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("An error occurred!"));
+                } else {
+                  final courseContent = courseContentProvider.courses;
+                  final lessons = courseContentProvider.lessons;
+                  if (lessons.isEmpty) {
+                    return Center(child: Text("No Lesson available."));
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.all(TSizes.defaultSpace / 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            courseContent[0].courseName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            // border: Border.all(color: TColors.primaryColor),
+                          ),
+                          child: Text(
+                            courseContent[0].courseDescription,
+                            // textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Text(
+                          "Lessons:",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Divider(
+                          color: TColors.secondaryColor,
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: lessons.length,
+                          itemBuilder: (context, index) {
+                            final lesson = lessons[index];
+
+                            return GestureDetector(
+                              onTap: () async {},
+                              child: Container(
+                                margin: EdgeInsets.all(5.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    color: TColors.secondaryColor
+                                        .withOpacity(0.1)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(64),
+                                              color: TColors.white,
+                                            ),
+                                            child: const Icon(
+                                              Iconsax.book,
+                                              size: 20.0,
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.0),
+                                          Expanded(
+                                            child: Text(
+                                              lesson.lessonTitle,
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.0),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: TColors.secondaryColor,
+                                          ),
+                                        ],
+                                      ),
+                                      /*Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5.0,
+                                                horizontal: 10.0),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      8.0),
+                                              color: TColors.primaryColor
+                                                  .withOpacity(0.5),
+                                            ),
+                                            child: Text(
+                                              lesson.isFree == "Y"
+                                                  ? "FREE"
+                                                  : "PAID",
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                // color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),*/
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

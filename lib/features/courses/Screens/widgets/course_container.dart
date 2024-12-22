@@ -19,10 +19,12 @@ class CourseContainer extends StatelessWidget {
     required this.isEnrolled,
     this.enrolledBackgroundColor,
     this.unEnrolledCoursesColor,
+    required this.courseId,
   });
 
   final Color? enrolledBackgroundColor, unEnrolledCoursesColor;
   final String courseCategory, courseTitle, totalEnrolled;
+  final int courseId;
   final bool isEnrolled;
   final double? progress;
 
@@ -39,6 +41,7 @@ class CourseContainer extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => LessonListScreen(
                         courseTitle: courseTitle,
+                        courseCategoryId: courseId,
                       ),
                     ),
                   )

@@ -3,11 +3,74 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
+import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
 
 import '../features/ToolsContent/datamodel/studyToolsDataModel.dart';
+import '../features/courses/DataModel/CourseContentDataModel.dart';
 
-class ApiController{
+class ApiController {
   static const String baseUrl = 'https://api.risho.guru';
+
+  static const String webURL = 'https://demoapi.talentlenshub.com/api';
+
+  Future<List<TrainingCategoryDataModel>> getTrainingCategories() async {
+    try {
+      final response = await http.get(Uri.parse("$webURL/training/categories"));
+
+      if (response.statusCode == 200) {
+        var responseBody = response.body;
+        // Decode the response body into a List<dynamic> and map it to a list of TrainingCategoryDataModel
+        List<dynamic> data = json.decode(responseBody);
+        // print(data);
+        return data
+            .map((json) => TrainingCategoryDataModel.fromJson(json))
+            .toList();
+      } else {
+        throw Exception('Failed to load training categories');
+      }
+    } catch (e) {
+      throw Exception('Error occurred: $e');
+    }
+  }
+
+  // Method to fetch courseList by category
+  Future<List<CourseListDataModel>> getCoursesByCategory(
+      int? courseCategoryId) async {
+    final response = await http
+        .get(Uri.parse('$webURL/training/getcoursesbyid/$courseCategoryId'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data
+          .map((course) => CourseListDataModel.fromJson(course))
+          .toList();
+    } else {
+      throw Exception('Failed to load courses');
+    }
+  }
+
+  // Method to fetch courses Content by course ID
+  Future<Map<String, dynamic>> getCoursesContent(int? courseCategoryId) async {
+    try {
+      print(
+          'Fetching courses from: $webURL/training/training_details/$courseCategoryId');
+      final response = await http.get(
+          Uri.parse('$webURL/training/training_details/$courseCategoryId'));
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        throw Exception('Failed to fetch courses');
+      }
+    } catch (e) {
+      print('API Error: $e');
+      throw Exception('Failed to fetch courses: $e');
+    }
+  }
 
   static Future<List<StudyToolsDataModel>> fetchTools(int userId) async {
     const apiUrl = '$baseUrl/gettoolslist/';
@@ -25,7 +88,9 @@ class ApiController{
 
         if (responseData != null && responseData['studytools'] != null) {
           final List<dynamic> toolsData = responseData['studytools'];
-          return toolsData.map((data) => StudyToolsDataModel.fromJson(data)).toList();
+          return toolsData
+              .map((data) => StudyToolsDataModel.fromJson(data))
+              .toList();
         } else {
           throw Exception('Invalid response format');
         }
@@ -102,7 +167,7 @@ class ApiController{
     request.fields['gradeclass'] = gradeclass.toString();
     request.fields['toolscode'] = toolscode.toString();
     request.fields['maxSentence'] =
-    isMobile.toString() == null ? isMobile.toString() : "50";
+        isMobile.toString() == null ? isMobile.toString() : "50";
     request.fields['isMobileApp'] = "Y";
     request.files.add(
         await http.MultipartFile.fromPath('questionimage', questionImage.path));
@@ -113,7 +178,7 @@ class ApiController{
     if (response.statusCode == 200) {
       print('Image uploaded successfully');
       final responseString =
-      await response.stream.transform(utf8.decoder).join();
+          await response.stream.transform(utf8.decoder).join();
       final responseCheck = json.decode(responseString);
       // final responseCheck = json.decode(await response.stream.bytesToString());
       print("Response check -> $responseCheck");
@@ -215,7 +280,4 @@ class ApiController{
       throw Exception("Failed getToolsDataByCode $e");
     }
   }
-
-
-
 }

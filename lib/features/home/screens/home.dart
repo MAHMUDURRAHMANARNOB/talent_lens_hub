@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/ai_helper_container.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/home_app_bar.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/pd_containers.dart';
@@ -49,8 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final dark = THelperFunction.isDarkMode(context);
+    final dark = THelperFunction.isDarkMode(context);
     final double height = MediaQuery.sizeOf(context).height;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -73,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const THomeAppBar(),
                 // SizedBox(height: TSizes.defaultSpace),
+
                 // Enrolled courses
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
@@ -81,10 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TSectionHeading(
+                      TSectionHeading(
                         title: "Ongoing Courses",
                         showActionButton: false,
-                        textColor: TColors.primaryColor,
+                        textColor: dark ? Colors.white : TColors.primaryColor,
                       ),
                       const SizedBox(height: TSizes.spaceBtwItems),
                       //Scrollable Categories
@@ -108,13 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Flexible(
+                                    Flexible(
                                       flex: 1,
                                       child: Text(
                                         "Python for Beginners",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                          color: dark
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                         textAlign: TextAlign.start,
                                       ),
@@ -158,13 +163,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Flexible(
+                                    Flexible(
                                       flex: 1,
                                       child: Text(
                                         "Android with kotlin",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                          color: dark
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                         textAlign: TextAlign.start,
                                       ),
@@ -237,7 +244,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Image.asset(
-                                          "assets/images/dashboard_images/career_counselor.png",
+                                          dark
+                                              ? "assets/images/dashboard_images/career_dark.png"
+                                              : "assets/images/dashboard_images/career_counselor.png",
                                           width: 60,
                                           height: 60,
                                         ),
@@ -305,7 +314,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Image.asset(
-                                          "assets/images/dashboard_images/career_counselor.png",
+                                          dark
+                                              ? "assets/images/dashboard_images/career_dark.png"
+                                              : "assets/images/dashboard_images/career_counselor.png",
                                           width: 60,
                                           height: 60,
                                         ),
@@ -439,9 +450,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     textColor: TColors.primaryColor,
                   ),
                 ),
-                const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: TSizes.defaultSpace / 2),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: TSizes.defaultSpace / 2),
                   child: SizedBox(
                     width: double.infinity,
                     child: Row(
@@ -455,7 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             staticToolsCode: '',
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                           child: AiHelperContainer(
                             image:
                                 "assets/images/dashboard_images/career_counselor.png",
@@ -464,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             staticToolsCode: '',
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                           child: AiHelperContainer(
                             image:
                                 "assets/images/dashboard_images/life_coach.png",

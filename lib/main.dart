@@ -7,6 +7,9 @@ import 'features/ToolsContent/providers/studyToolsProvider.dart';
 import 'features/ToolsContent/providers/toolsDataByCodeProvider.dart';
 import 'features/ToolsContent/providers/toolsReplyProvider.dart';
 import 'features/ToolsContent/providers/toolsResponseProvider.dart';
+import 'features/courses/Provider/CourseContentProvider.dart';
+import 'features/courses/Provider/CourseListProvider.dart';
+import 'features/courses/Provider/TrainingCategoryProvider.dart';
 
 // ---- Entry Point of Flutter App ----
 void main() {
@@ -19,6 +22,12 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => TrainingCategoryProvider(),
+        ),
+        ChangeNotifierProvider(create: (_) => CourseContentProvider()),
+        ChangeNotifierProvider(create: (_) => CourseListProvider()),
+        // ChangeNotifierProvider(create: (_) => LessonProvider()),
         ChangeNotifierProvider(
             create: (context) => StudyToolsProvider(userId: 0)),
         ChangeNotifierProvider(

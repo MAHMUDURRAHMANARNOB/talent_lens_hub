@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:talent_lens_hub/utils/constants/sizes.dart';
 
+import '../../../../utils/helpers/helper_function.dart';
 import '../../../ToolsContent/screens/ToolsContentScreen.dart';
 
 class AiHelperContainer extends StatelessWidget {
@@ -20,6 +21,8 @@ class AiHelperContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dark = THelperFunction.isDarkMode(context);
+
     return GestureDetector(
       onTap: () {
         print('$title pressed');
@@ -43,7 +46,7 @@ class AiHelperContainer extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: dark ? Colors.white : color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Image.asset(
