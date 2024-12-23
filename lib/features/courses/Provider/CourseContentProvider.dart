@@ -30,7 +30,7 @@ class CourseContentProvider with ChangeNotifier {
       final response = await _apiController.getCoursesContent(courseCategoryId);
 
       // Debugging: Print response structure
-      print('API Response: $response');
+      // print('API Response: $response');
 
       // Check and parse coursedata
       if (response['coursedata'] is List) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
@@ -127,7 +128,8 @@ class _LessonListScreenState extends State<LessonListScreen> {
                   .fetchCourseContent(widget.courseCategoryId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: SpinKitCircle(color: TColors.primaryColor));
                 } else if (snapshot.hasError) {
                   return Center(child: Text("An error occurred!"));
                 } else {
@@ -182,13 +184,23 @@ class _LessonListScreenState extends State<LessonListScreen> {
                             final lesson = lessons[index];
 
                             return GestureDetector(
-                              onTap: () async {},
+                              onTap: () async {
+                                print("Lesosnid ${lesson.id}");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LessonBoardScreen(
+                                          lessonTitle: lesson.lessonTitle,
+                                          lessonId: lesson.id)),
+                                );
+                              },
                               child: Container(
                                 margin: EdgeInsets.all(5.0),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    color: TColors.secondaryColor
-                                        .withOpacity(0.1)),
+                                    color: lesson.isFree == 'Y'
+                                        ? TColors.success.withOpacity(0.1)
+                                        : TColors.info.withOpacity(0.1)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Column(
@@ -206,26 +218,61 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                   BorderRadius.circular(64),
                                               color: TColors.white,
                                             ),
-                                            child: const Icon(
+                                            child: Icon(
                                               Iconsax.book,
                                               size: 20.0,
+                                              color: lesson.isFree == 'Y'
+                                                  ? TColors.success
+                                                  : TColors.info,
                                             ),
                                           ),
                                           SizedBox(width: 10.0),
                                           Expanded(
-                                            child: Text(
-                                              lesson.lessonTitle,
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lesson.lessonTitle,
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 5.0),
+                                                  decoration: BoxDecoration(
+                                                    color: lesson.isFree == 'Y'
+                                                        ? TColors.success
+                                                        : TColors.info,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      6.0,
+                                                    ),
+                                                  ),
+                                                  child: Text(
+                                                    lesson.isFree == 'Y'
+                                                        ? "Free"
+                                                        : "Member",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
                                           SizedBox(width: 10.0),
                                           Icon(
                                             Icons.arrow_forward_ios,
-                                            color: TColors.secondaryColor,
+                                            color: lesson.isFree == 'Y'
+                                                ? TColors.success
+                                                : TColors.info,
                                           ),
                                         ],
                                       ),

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/LessonVideosDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
 
 import '../features/ToolsContent/datamodel/studyToolsDataModel.dart';
@@ -58,8 +59,8 @@ class ApiController {
       final response = await http.get(
           Uri.parse('$webURL/training/training_details/$courseCategoryId'));
 
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      // print('Response Status Code: ${response.statusCode}');
+      // print('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         return json.decode(response.body);
@@ -69,6 +70,53 @@ class ApiController {
     } catch (e) {
       print('API Error: $e');
       throw Exception('Failed to fetch courses: $e');
+    }
+  }
+
+  // Method to fetch lesson content by course-lesson Id
+  Future<List<dynamic>> fetchLessonAnswer(int lessonId) async {
+    final url = Uri.parse('$webURL/training/training_lessonanswer/$lessonId');
+    print(url);
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        if (response.body.isNotEmpty) {
+          print("json response ${json.decode(response.body)}");
+          return json.decode(response.body);
+        } else {
+          return [];
+        }
+      } else {
+        throw Exception('Failed to load lesson answer: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching lesson answer: $e');
+    }
+  }
+
+  // to fetch lesson videos by course-lesson ID
+  Future<List<LessonVideosDataModel>> fetchLessonVideos(int lessonId) async {
+    final url = Uri.parse('$webURL/training/training_lessonvideo/$lessonId');
+    print(url);
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        print("json response ${json.decode(response.body)}");
+        final List<dynamic> jsonResponse = json.decode(response.body);
+        return jsonResponse
+            .map((json) => LessonVideosDataModel.fromJson(json))
+            .toList();
+
+        // return json.decode(response.body);
+      } else {
+        throw Exception('Failed to load lesson videos: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching lesson answer: $e');
     }
   }
 
