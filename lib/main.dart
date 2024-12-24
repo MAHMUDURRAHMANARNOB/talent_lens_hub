@@ -12,6 +12,7 @@ import 'features/ToolsContent/providers/toolsResponseProvider.dart';
 import 'features/courses/Provider/CourseContentProvider.dart';
 import 'features/courses/Provider/CourseListProvider.dart';
 import 'features/courses/Provider/TrainingCategoryProvider.dart';
+import 'features/courses/Provider/VideoQuestionResponseProvider.dart';
 
 // ---- Entry Point of Flutter App ----
 void main() {
@@ -31,6 +32,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CourseListProvider()),
         ChangeNotifierProvider(create: (_) => LessonContentProvider()),
         ChangeNotifierProvider(create: (_) => LessonVideosProvider()),
+        ChangeNotifierProvider(create: (_) => VideoQuestionResponseProvider()),
         // ChangeNotifierProvider(create: (_) => LessonProvider()),
         ChangeNotifierProvider(
             create: (context) => StudyToolsProvider(userId: 0)),

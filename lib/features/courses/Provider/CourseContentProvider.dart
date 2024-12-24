@@ -7,7 +7,12 @@ class CourseContentProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   List<CourseDataModel> _courses = [];
+  List<LessonDataModel> _chapters = []; // To store chapters
   List<LessonDataModel> _lessons = [];
+  Map<int, List<LessonDataModel>> _chapterLessonsMap =
+      {}; // Map to group lessons by chapterIndex
+
+  // List<LessonDataModel> _regularLessons = []; // To store regular lessons
 
   bool get isLoading => _isLoading;
 
@@ -17,8 +22,13 @@ class CourseContentProvider with ChangeNotifier {
 
   List<LessonDataModel> get lessons => _lessons;
 
-  final ApiController _apiController =
-      ApiController(); // Ensure this is the class containing the API method.
+  List<LessonDataModel> get chapters => _chapters;
+
+  // List<LessonDataModel> get regularLessons => _regularLessons;
+
+  Map<int, List<LessonDataModel>> get chapterLessonsMap => _chapterLessonsMap;
+
+  final ApiController _apiController = ApiController();
 
   Future<void> fetchCourseContent(int? courseCategoryId) async {
     _isLoading = true;
@@ -48,6 +58,24 @@ class CourseContentProvider with ChangeNotifier {
             .map((item) => LessonDataModel.fromJson(item))
             .toList();
         _lessons = lessonData;
+        // Separate chapters and regular lessons based on "isChapter"
+        /*_chapters =
+            _lessons.where((lesson) => lesson.isChapter == 'Y').toList();
+        _regularLessons =
+            _lessons.where((lesson) => lesson.isChapter == 'N').toList();*/
+        _chapterLessonsMap = {};
+        for (var lesson in _lessons) {
+          if (lesson.isChapter == 'Y') {
+            // Create a new entry for a chapter
+            _chapterLessonsMap[lesson.chapterIndex] = [];
+          }
+        }
+        for (var lesson in _lessons) {
+          if (lesson.isChapter == 'N') {
+            // Add regular lessons to their corresponding chapterIndex
+            _chapterLessonsMap[lesson.chapterIndex]?.add(lesson);
+          }
+        }
       } else {
         throw Exception('Expected lessondata to be a list');
       }

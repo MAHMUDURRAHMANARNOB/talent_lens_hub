@@ -9,6 +9,7 @@ import 'package:talent_lens_hub/features/courses/Provider/LessonContentProvider.
 
 import '../../../../utils/constants/colors.dart';
 import '../../Provider/LessonVideosProvider.dart';
+import 'VideoPlayerBoard.dart';
 
 class LessonBoardScreen extends StatefulWidget {
   final String lessonTitle;
@@ -275,15 +276,15 @@ class _LessonBoardScreenState extends State<LessonBoardScreen>
               return GestureDetector(
                 onTap: () {
                   // Fluttertoast.showToast(msg: video.lessonId.toString());
-                  /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => VideoPlayerBoard(
-                      videoUrl: video.videoUrl,
-                      videoTitle: video.videoTitle,
-                      isVideo: "Y",
-                      lessonContentId: video.videoId)),
-            );*/
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => VideoPlayerBoard(
+                            videoUrl: video.videoUrl,
+                            videoTitle: video.videoTitle,
+                            isVideo: "Y",
+                            videoId: video.id)),
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),

@@ -9,9 +9,10 @@ import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataM
 
 import '../features/ToolsContent/datamodel/studyToolsDataModel.dart';
 import '../features/courses/DataModel/CourseContentDataModel.dart';
+import '../features/courses/DataModel/VideoQuestionResponseDataModel.dart';
 
 class ApiController {
-  static const String baseUrl = 'https://api.risho.guru';
+  static const String baseUrl = 'https://testapi.talentlenshub.com';
 
   static const String webURL = 'https://demoapi.talentlenshub.com/api';
 
@@ -54,8 +55,8 @@ class ApiController {
   // Method to fetch courses Content by course ID
   Future<Map<String, dynamic>> getCoursesContent(int? courseCategoryId) async {
     try {
-      print(
-          'Fetching courses from: $webURL/training/training_details/$courseCategoryId');
+      // print(
+      //     'Fetching courses from: $webURL/training/training_details/$courseCategoryId');
       final response = await http.get(
           Uri.parse('$webURL/training/training_details/$courseCategoryId'));
 
@@ -76,14 +77,14 @@ class ApiController {
   // Method to fetch lesson content by course-lesson Id
   Future<List<dynamic>> fetchLessonAnswer(int lessonId) async {
     final url = Uri.parse('$webURL/training/training_lessonanswer/$lessonId');
-    print(url);
+    // print(url);
 
     try {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {
-          print("json response ${json.decode(response.body)}");
+          // print("json response ${json.decode(response.body)}");
           return json.decode(response.body);
         } else {
           return [];
@@ -99,13 +100,13 @@ class ApiController {
   // to fetch lesson videos by course-lesson ID
   Future<List<LessonVideosDataModel>> fetchLessonVideos(int lessonId) async {
     final url = Uri.parse('$webURL/training/training_lessonvideo/$lessonId');
-    print(url);
+    // print(url);
 
     try {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        print("json response ${json.decode(response.body)}");
+        // print("json response ${json.decode(response.body)}");
         final List<dynamic> jsonResponse = json.decode(response.body);
         return jsonResponse
             .map((json) => LessonVideosDataModel.fromJson(json))
@@ -117,6 +118,56 @@ class ApiController {
       }
     } catch (e) {
       throw Exception('Error fetching lesson answer: $e');
+    }
+  }
+
+  // fetch lesson answer
+  Future<Map<String, dynamic>> fetchVideoAnswer({
+    required String question,
+    required int videoID,
+    required int userId,
+  }) async {
+    try {
+      /*const uri = "${baseUrl}/videoanswer/";
+      final Map<String, String> body = {
+        'question': question,
+        'videoID': videoID.toString(),
+        'userid': userId.toString(),
+      };*/
+      final uri = Uri.parse("$baseUrl/videoanswer/").replace(queryParameters: {
+        'question': question,
+        'videoID': videoID.toString(),
+        'userid': userId.toString(),
+      });
+
+      final response = await http.post(
+        /*Uri.parse(uri),
+        body: body,*/
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          // Indicate form-data
+        },
+        // Ensure headers match backend expectations
+        // body: body,
+      );
+      // print("Request Body: $body");
+
+      if (response.statusCode == 200) {
+        final responseBody = Utf8Decoder().convert(response.bodyBytes);
+        print("responsebody: $responseBody");
+        final jsonResponse = jsonDecode(response.body);
+        print("jsonResponse: hi$jsonResponse");
+        var finalResponse = Utf8Decoder().convert(response.bodyBytes);
+        return json.decode(responseBody);
+      } else {
+        print("Error Status Code: ${response.statusCode}");
+
+        // print("Request Body: $body");
+        throw Exception('Failed to load data: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error occurred: $e');
     }
   }
 

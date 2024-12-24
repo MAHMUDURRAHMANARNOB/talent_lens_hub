@@ -135,9 +135,15 @@ class _LessonListScreenState extends State<LessonListScreen> {
                 } else {
                   final courseContent = courseContentProvider.courses;
                   final lessons = courseContentProvider.lessons;
-                  if (lessons.isEmpty) {
+                  // final chapters = courseContentProvider.chapters;
+                  // final regularLessons = courseContentProvider.regularLessons;
+                  final chapterLessonsMap =
+                      courseContentProvider.chapterLessonsMap;
+
+                  if (lessons.isEmpty && courseContent.isEmpty) {
                     return Center(child: Text("No Lesson available."));
                   }
+                  print(chapterLessonsMap.length);
                   return Padding(
                     padding: const EdgeInsets.all(TSizes.defaultSpace / 2),
                     child: Column(
@@ -167,7 +173,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
                           ),
                         ),
                         Text(
-                          "Lessons:",
+                          "Chapters:",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -182,10 +188,11 @@ class _LessonListScreenState extends State<LessonListScreen> {
                           itemCount: lessons.length,
                           itemBuilder: (context, index) {
                             final lesson = lessons[index];
+                            // final chapter = lessons[index];
 
                             return GestureDetector(
                               onTap: () async {
-                                print("Lesosnid ${lesson.id}");
+                                print("chapterid ${lesson.id}");
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -276,40 +283,48 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                           ),
                                         ],
                                       ),
-                                      /*Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5.0,
-                                                horizontal: 10.0),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      8.0),
-                                              color: TColors.primaryColor
-                                                  .withOpacity(0.5),
-                                            ),
-                                            child: Text(
-                                              lesson.isFree == "Y"
-                                                  ? "FREE"
-                                                  : "PAID",
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                // color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),*/
                                     ],
                                   ),
                                 ),
                               ),
+                            );
+                          },
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: chapterLessonsMap.length,
+                          itemBuilder: (context, index) {
+                            final chapterIndex =
+                                chapterLessonsMap.keys.elementAt(index);
+                            final lessons = chapterLessonsMap[chapterIndex]!;
+
+                            final chapterTitle = lessons.first.lessonTitle;
+
+                            return ExpansionTile(
+                              title: Text(
+                                chapterTitle,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              children: lessons.map((lesson) {
+                                return ListTile(
+                                  title: Text(lesson.lessonTitle),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LessonBoardScreen(
+                                          lessonTitle: lesson.lessonTitle,
+                                          lessonId: lesson.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }).toList(),
                             );
                           },
                         ),
