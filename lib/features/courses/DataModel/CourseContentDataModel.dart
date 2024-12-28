@@ -161,13 +161,13 @@ class LessonDataModel {
   final int id;
   final int courseId;
   final String lessonTitle;
-  final bool isChapter;
+  final String isChapter;
   final int answerCount;
   final int seqNo;
-  final bool isActive;
+  final String isActive;
   final int chapterIndex;
-  final bool isProcessed;
-  final bool isAssignment;
+  final String isProcessed;
+  final String isAssignment;
   final String isFree;
 
   LessonDataModel({
@@ -189,13 +189,13 @@ class LessonDataModel {
       id: json['id'],
       courseId: json['Courseid'],
       lessonTitle: json['Lessontitle'],
-      isChapter: json['isChapter'] == "Y",
+      isChapter: json['isChapter'],
       answerCount: json['Anscount'],
       seqNo: json['SeqNo'],
-      isActive: json['isactive'] == "Y",
+      isActive: json['isactive'],
       chapterIndex: json['chapterIndex'],
-      isProcessed: json['isProcessed'] == "Y",
-      isAssignment: json['isassigment'] == "Y",
+      isProcessed: json['isProcessed'],
+      isAssignment: json['isassigment'],
       isFree: json['isFree'],
     );
   }
@@ -205,13 +205,13 @@ class LessonDataModel {
       'id': id,
       'Courseid': courseId,
       'Lessontitle': lessonTitle,
-      'isChapter': isChapter ? "Y" : "N",
+      'isChapter': isChapter,
       'Anscount': answerCount,
       'SeqNo': seqNo,
-      'isactive': isActive ? "Y" : "N",
+      'isactive': isActive,
       'chapterIndex': chapterIndex,
-      'isProcessed': isProcessed ? "Y" : "N",
-      'isassigment': isAssignment ? "Y" : "N",
+      'isProcessed': isProcessed,
+      'isassigment': isAssignment,
       'isFree': isFree,
     };
   }

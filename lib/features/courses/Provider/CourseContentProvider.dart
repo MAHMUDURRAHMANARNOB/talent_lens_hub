@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 
 import '../../../api/api_controller.dart';
@@ -59,10 +60,12 @@ class CourseContentProvider with ChangeNotifier {
             .toList();
         _lessons = lessonData;
         // Separate chapters and regular lessons based on "isChapter"
-        /*_chapters =
+        */
+/*_chapters =
             _lessons.where((lesson) => lesson.isChapter == 'Y').toList();
         _regularLessons =
-            _lessons.where((lesson) => lesson.isChapter == 'N').toList();*/
+            _lessons.where((lesson) => lesson.isChapter == 'N').toList();*/ /*
+
         _chapterLessonsMap = {};
         for (var lesson in _lessons) {
           if (lesson.isChapter == 'Y') {
@@ -81,6 +84,69 @@ class CourseContentProvider with ChangeNotifier {
       }
     } catch (e) {
       // Capture and handle errors.
+      _errorMessage = 'Failed to fetch courses: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+}
+*/
+import 'package:flutter/material.dart';
+
+import '../../../api/api_controller.dart';
+import '../DataModel/CourseContentDataModel.dart';
+
+class CourseContentProvider with ChangeNotifier {
+  bool _isLoading = false;
+  String? _errorMessage;
+  List<CourseDataModel> _courses = [];
+  List<LessonDataModel> _lessons = [];
+  Map<int, List<LessonDataModel>> _chapterLessonsMap = {};
+
+  final ApiController _apiController = ApiController();
+
+  bool get isLoading => _isLoading;
+
+  String? get errorMessage => _errorMessage;
+
+  List<CourseDataModel> get courses => _courses;
+
+  List<LessonDataModel> get lessons => _lessons;
+
+  Map<int, List<LessonDataModel>> get chapterLessonsMap => _chapterLessonsMap;
+
+  Future<void> fetchCourseContent(int? courseCategoryId) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await _apiController.getCoursesContent(courseCategoryId);
+
+      if (response['coursedata'] is List) {
+        _courses = (response['coursedata'] as List)
+            .map((item) => CourseDataModel.fromJson(item))
+            .toList();
+      }
+
+      if (response['lessondata'] is List) {
+        _lessons = (response['lessondata'] as List)
+            .map((item) => LessonDataModel.fromJson(item))
+            .toList();
+        notifyListeners();
+
+        /*_chapterLessonsMap = {};
+        for (var lesson in _lessons) {
+          if (lesson.isChapter == 'Y') {
+            _chapterLessonsMap[lesson.chapterIndex] = [];
+          } else if (lesson.isChapter == 'N') {
+            _chapterLessonsMap[lesson.chapterIndex]?.add(lesson);
+            // _lessons.add(lesson);
+          }
+        }*/
+      }
+    } catch (e) {
       _errorMessage = 'Failed to fetch courses: $e';
     } finally {
       _isLoading = false;

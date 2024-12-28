@@ -74,105 +74,6 @@ class _LessonBoardScreenState extends State<LessonBoardScreen>
 
   final config = MarkdownConfig.defaultConfig;
 
-  Widget _lessonContent() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10.0),
-      child: /*MarkdownWidget(
-        data:
-            lessonContentProvider.lessonContentDataModel!.textAns.toString() ??
-                "",
-        config: config,
-      ),*/
-          SingleChildScrollView(
-        child: Html(
-          data:
-              lessonContentProvider.lessonContentDataModel!.textAns.toString(),
-        ),
-      ),
-
-      // After the Markdown widget, display the other lesson components
-    );
-  }
-
-  Widget _videoContent() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      itemCount:
-          // ieltsCourseLessonProvider.ieltsCourseLessonResponse!.videoList.length,
-          3,
-      itemBuilder: (context, index) {
-        /*final video = ieltsCourseLessonProvider
-            .ieltsCourseLessonResponse!.videoList[index];*/
-
-        return GestureDetector(
-          onTap: () {
-            // Fluttertoast.showToast(msg: video.lessonId.toString());
-            /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => VideoPlayerBoard(
-                      videoUrl: video.videoUrl,
-                      videoTitle: video.videoTitle,
-                      isVideo: "Y",
-                      lessonContentId: video.videoId)),
-            );*/
-          },
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: TColors.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  "assets/images/dashboard_images/youtube.png",
-                  width: 34,
-                  height: 34,
-                ),
-                SizedBox(width: 8.0),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        /*video.videoTitle*/
-                        "TITLE",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 1,
-                          ),
-                          Text(
-                            "Duration: ${/*video.videoDuration*/ "100"} minutes",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,11 +119,6 @@ class _LessonBoardScreenState extends State<LessonBoardScreen>
           );*/
           return Stack(
             children: [
-              /*Positioned(
-                bottom: 50,
-                right: 20,
-                child: ShimmerArrow(),
-              ),*/
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -232,15 +128,31 @@ class _LessonBoardScreenState extends State<LessonBoardScreen>
                   ],
                 ),
               ),
-              // _lessonContent()
-              // Text(lessoncontent!),
-
-              /// Animated Container for the question box
-              /// need to implement afterward
             ],
           );
         }
       },
+    );
+  }
+
+  Widget _lessonContent() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10.0),
+      child: /*MarkdownWidget(
+        data:
+            lessonContentProvider.lessonContentDataModel!.textAns.toString() ??
+                "",
+        config: config,
+      ),*/
+          SingleChildScrollView(
+        child: Html(
+          data:
+              lessonContentProvider.lessonContentDataModel!.textAns.toString(),
+        ),
+      ),
+
+      // After the Markdown widget, display the other lesson components
     );
   }
 

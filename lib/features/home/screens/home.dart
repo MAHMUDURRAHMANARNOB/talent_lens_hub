@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
@@ -16,6 +17,8 @@ import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../courses/DataModel/EnrolledCoursesDataModel.dart';
+import '../../courses/Provider/EnrolledCoursesProvider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,32 +28,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> carosole = [
-    Container(
-      color: Colors.red,
-      child: Center(
-          child: Text('Item 1',
-              style: TextStyle(color: Colors.white, fontSize: 24))),
-    ),
-    Container(
-      color: Colors.green,
-      child: Center(
-          child: Text('Item 2',
-              style: TextStyle(color: Colors.white, fontSize: 24))),
-    ),
-    Container(
-      color: Colors.blue,
-      child: Center(
-          child: Text('Item 3',
-              style: TextStyle(color: Colors.white, fontSize: 24))),
-    ),
-  ];
-
-  final CarouselController controller = CarouselController(initialItem: 1);
+  late int userId;
+  late EnrolledCoursesProvider enrolledCoursesProvider =
+      EnrolledCoursesProvider();
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunction.isDarkMode(context);
+    userId = 1;
     final double height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
@@ -77,136 +62,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 // SizedBox(height: TSizes.defaultSpace),
 
                 // Enrolled courses
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      TSizes.defaultSpace / 2, 0, 0, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TSectionHeading(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          TSizes.defaultSpace / 2, 0, 0, 0),
+                      child: TSectionHeading(
                         title: "Ongoing Courses",
-                        showActionButton: false,
+                        showActionButton: true,
+                        buttonTitle: "Show All",
                         textColor: dark ? Colors.white : TColors.primaryColor,
                       ),
-                      const SizedBox(height: TSizes.spaceBtwItems),
-                      //Scrollable Categories
-                      Container(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 200,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 10.0),
-                                decoration: BoxDecoration(
-                                  // color: TColors.primaryColor.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  border: Border.all(
-                                    color: TColors.primaryColor,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      flex: 1,
-                                      child: Text(
-                                        "Python for Beginners",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: dark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                    // SizedBox(width: 10.0),
-                                    CircularPercentIndicator(
-                                      radius: 20.0,
-                                      animation: true,
-                                      animationDuration: 500,
-                                      lineWidth: 5.0,
-                                      percent: 0.4,
-                                      center: new Text(
-                                        "40%",
-                                        style: new TextStyle(
-                                            // fontWeight: FontWeight.bold,
-                                            fontSize: 12.0),
-                                      ),
-                                      circularStrokeCap:
-                                          CircularStrokeCap.round,
-                                      // backgroundColor: Colors.white70,
-                                      progressColor: TColors.primaryColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Container(
-                                width: 200,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 10.0),
-                                decoration: BoxDecoration(
-                                  // color: TColors.primaryColor.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  border: Border.all(
-                                    color: TColors.primaryColor,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      flex: 1,
-                                      child: Text(
-                                        "Android with kotlin",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: dark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                    // SizedBox(width: 10.0),
-                                    CircularPercentIndicator(
-                                      radius: 20.0,
-                                      animation: true,
-                                      animationDuration: 500,
-                                      lineWidth: 5.0,
-                                      percent: 0.6,
-                                      center: new Text(
-                                        "60%",
-                                        style: new TextStyle(
-                                            // fontWeight: FontWeight.bold,
-                                            fontSize: 12.0),
-                                      ),
-                                      circularStrokeCap:
-                                          CircularStrokeCap.round,
-                                      // backgroundColor: Colors.white70,
-                                      progressColor: TColors.primaryColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    //Scrollable Categories
+                    _enrolledCourseList(),
+                  ],
                 ),
-
+                SizedBox(height: TSizes.spaceBtwItems),
                 // Recommended Courses
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: TSizes.defaultSpace / 2),
                   child: Column(
@@ -367,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
 
                 //   Categories
                 const Padding(
@@ -532,6 +408,85 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _enrolledCourseList() {
+    return FutureBuilder(
+      future: enrolledCoursesProvider.getEnrolledCourses(userId.toString()),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: SpinKitWave(
+            color: TColors.primaryColor,
+            size: 20,
+          ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return Container(
+            width: double.infinity,
+            height: 150,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                final EnrolledCoursesDataModel course =
+                    enrolledCoursesProvider.enrolledCourses[index];
+                return Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    // color: TColors.success.withOpacity(0.2),
+                    border: Border.all(color: TColors.primaryColor),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          course.courseName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          decoration: BoxDecoration(
+                            color: TColors.primaryColor,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(8.0),
+                              bottomRight: Radius.circular(8.0),
+                            ),
+                          ),
+                          child: Text(
+                            "Continue",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }

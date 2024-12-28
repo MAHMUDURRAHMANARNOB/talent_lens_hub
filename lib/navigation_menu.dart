@@ -50,8 +50,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 ),
                 label: "Home"),
             NavigationDestination(icon: Icon(Iconsax.book), label: "Courses"),
-            NavigationDestination(
-                icon: Icon(Iconsax.brifecase_cross), label: "Jobs"),
+            /*NavigationDestination(
+                icon: Icon(Iconsax.brifecase_cross), label: "Jobs"),*/
             NavigationDestination(icon: Icon(Iconsax.user), label: "Profile"),
           ],
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -110,10 +110,10 @@ class _NavigationMenuState extends State<NavigationMenu> {
       case 1:
         return const CoursesScreen() /*Container(color: Colors.green)*/;
         break;
+      /*case 2:
+        return const JobScreen() */ /*Container(color: Colors.orange)*/ /*;
+        break;*/
       case 2:
-        return const JobScreen() /*Container(color: Colors.orange)*/;
-        break;
-      case 3:
         return const ProfileScreen() /*Container(color: Colors.purple)*/;
         break;
       default:

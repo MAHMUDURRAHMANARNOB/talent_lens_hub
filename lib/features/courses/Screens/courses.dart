@@ -6,7 +6,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:talent_lens_hub/features/courses/CourseContent/screens/LessonListScreen.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
 import 'package:talent_lens_hub/features/courses/Provider/CourseListProvider.dart';
+import 'package:talent_lens_hub/features/courses/Provider/EnrolledCoursesProvider.dart';
 import 'package:talent_lens_hub/features/courses/Screens/widgets/course_container.dart';
 import 'package:talent_lens_hub/utils/constants/colors.dart';
 import 'package:talent_lens_hub/utils/constants/sizes.dart';
@@ -32,6 +34,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
   late TrainingCategoryProvider trainingCategoryProvider =
       TrainingCategoryProvider();
   late CourseListProvider courseListProvider = CourseListProvider();
+  late EnrolledCoursesProvider enrolledCoursesProvider =
+      EnrolledCoursesProvider();
 
   @override
   void initState() {
@@ -41,225 +45,15 @@ class _CoursesScreenState extends State<CoursesScreen> {
         Provider.of<TrainingCategoryProvider>(context, listen: false);
   }
 
+  late int userId;
+
   @override
   Widget build(BuildContext context) {
     final darkMode = THelperFunction.isDarkMode(context);
+    userId = 1;
 
     courseListProvider = Provider.of<CourseListProvider>(context);
-    /*return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: 0,
-              maxHeight: MediaQuery.of(context).size.height, // or a fixed value
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(TSizes.defaultSpace),
-                  child: SearchBar(
-                    // controller: controller,
-                    backgroundColor: darkMode
-                        ? WidgetStatePropertyAll<Color?>((TColors.dark))
-                        : WidgetStatePropertyAll<Color?>((TColors.light)),
-                    hintText: "Search Course",
-                    hintStyle: WidgetStatePropertyAll<TextStyle?>(
-                        Theme.of(context).textTheme.bodySmall),
-                    padding: const WidgetStatePropertyAll<EdgeInsets>(
-                        EdgeInsets.symmetric(horizontal: TSizes.md)),
-                    onTap: () {
-                      // controller.openView();
-                    },
-                    onChanged: (_) {
-                      // controller.openView();
-                    },
-                    leading: const Icon(Iconsax.search_normal),
-                    trailing: <Widget>[
-                      */ /*Tooltip(
-                        message: 'Change brightness mode',
-                        child: IconButton(
-                          isSelected: darkMode,
-                          onPressed: () {
-                            setState(() {
-                              darkMode = !darkMode;
-                            });
-                          },
-                          icon: const Icon(Icons.wb_sunny_outlined),
-                          selectedIcon: const Icon(Icons.brightness_2_outlined),
-                        ),
-                      )*/ /*
-                      Tooltip(
-                        message: 'Filter your search',
-                        child: IconButton(
-                          isSelected: darkMode,
-                          onPressed: () {
-                            // setState(() {
-                            //   darkMode = !darkMode;
-                            // });
-                          },
-                          icon: const Icon(Iconsax.filter),
-                          // selectedIcon: const Icon(Icons.brightness_2_outlined),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                */ /*Courses Category Chip Row*/ /*
-                _courseCategoryList(),
-                */ /*In Progress Text*/ /*
-                const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
-                  child: TSectionHeading(
-                    title: "In Progress",
-                    showActionButton: true,
-                    buttonTitle: "View All",
-                    // onPressed: () {},
-                    textColor: TColors.primaryColor,
-                  ),
-                ),
 
-                */ /*In Progress Items Row*/ /*
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: TSizes.defaultSpace / 2),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 200,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10.0),
-                          decoration: BoxDecoration(
-                            // color: TColors.primaryColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12.0),
-                            border: Border.all(
-                              color: TColors.primaryColor,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Flexible(
-                                flex: 1,
-                                child: Text(
-                                  "Python for Beginners",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
-                              // SizedBox(width: 10.0),
-                              CircularPercentIndicator(
-                                radius: 20.0,
-                                animation: true,
-                                animationDuration: 500,
-                                lineWidth: 5.0,
-                                percent: 0.4,
-                                center: new Text(
-                                  "40%",
-                                  style: new TextStyle(
-                                      // fontWeight: FontWeight.bold,
-                                      fontSize: 12.0),
-                                ),
-                                circularStrokeCap: CircularStrokeCap.round,
-                                // backgroundColor: Colors.white70,
-                                progressColor: TColors.primaryColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: TSizes.spaceBtwSections / 2),
-                */ /*Category Wise Name*/ /*
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: TSizes.defaultSpace),
-                  child: TSectionHeading(
-                    title: selectedCategory ?? "All Courses",
-                    showActionButton: true,
-                    buttonTitle: "View All",
-                    // onPressed: () {},
-                    textColor: TColors.primaryColor,
-                  ),
-                ),
-                */ /*Category Wise Courses Load in onSelect*/ /*
-                */ /*Render course list if a category is selected*/ /*
-                Expanded(
-                  child: Consumer<CourseListProvider>(
-                    builder: (context, provider, child) {
-                      if (provider.isLoading) {
-                        return Center(
-                          child: SpinKitCircle(color: TColors.primaryColor),
-                        );
-                      }
-                      if (provider.courses.isEmpty) {
-                        return Center(
-                          child: Text(
-                              "No courses available for the selected category."),
-                        );
-                      }
-                      print(provider.courses.length);
-                      return ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: provider.courses.length,
-                        itemBuilder: (context, index) {
-                          final course = provider.courses[index];
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              // color: Colors.white,
-                              decoration: BoxDecoration(
-                                color: TColors.primaryColor.withOpacity(0.05),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: TSizes.defaultSpace / 2,
-                                vertical: TSizes.spaceBtwItems / 2,
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  course.courseName,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  course.courseDescription,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                leading: course.imgPath != null
-                                    ? Image.network(course.imgPath!)
-                                    : const Icon(Icons.book,
-                                        color: TColors.primaryColor),
-                                trailing: const Icon(Icons.arrow_forward_ios,
-                                    color: TColors.primaryColor),
-                                onTap: () {
-                                  // Handle course item click
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );*/
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -308,57 +102,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
             ),
 
             // In Progress Items Row
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: TSizes.defaultSpace / 2),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 200,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                          color: TColors.primaryColor,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: Text(
-                              "Python for Beginners",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: darkMode ? Colors.white : Colors.black,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          CircularPercentIndicator(
-                            radius: 20.0,
-                            animation: true,
-                            animationDuration: 500,
-                            lineWidth: 5.0,
-                            percent: 0.4,
-                            center: Text(
-                              "40%",
-                              style: TextStyle(fontSize: 12.0),
-                            ),
-                            circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: TColors.primaryColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            _enrolledCourseList(),
 
             SizedBox(height: TSizes.spaceBtwSections / 2),
 
@@ -366,12 +110,18 @@ class _CoursesScreenState extends State<CoursesScreen> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
-              child: TSectionHeading(
-                title: selectedCategory ?? "All Courses",
-                showActionButton: true,
-                buttonTitle: "View All",
-                textColor: TColors.primaryColor,
-              ),
+              child: selectedCategory == null
+                  ? Center(
+                      child: Text(
+                        "Select a category to access all courses",
+                      ),
+                    )
+                  : TSectionHeading(
+                      title: selectedCategory ?? "All Courses",
+                      showActionButton: true,
+                      buttonTitle: "View All",
+                      textColor: TColors.primaryColor,
+                    ),
             ),
 
             // Render course list
@@ -503,6 +253,85 @@ class _CoursesScreenState extends State<CoursesScreen> {
         }
 
         return Container(); // Empty container for other states
+      },
+    );
+  }
+
+  Widget _enrolledCourseList() {
+    return FutureBuilder(
+      future: enrolledCoursesProvider.getEnrolledCourses(userId.toString()),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: SpinKitWave(
+            color: TColors.primaryColor,
+            size: 20,
+          ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return Container(
+            width: double.infinity,
+            height: 150,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                final EnrolledCoursesDataModel course =
+                    enrolledCoursesProvider.enrolledCourses[index];
+                return Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    // color: TColors.success.withOpacity(0.2),
+                    border: Border.all(color: TColors.primaryColor),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          course.courseName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          decoration: BoxDecoration(
+                            color: TColors.primaryColor,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(8.0),
+                              bottomRight: Radius.circular(8.0),
+                            ),
+                          ),
+                          child: Text(
+                            "Continue",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        }
       },
     );
   }

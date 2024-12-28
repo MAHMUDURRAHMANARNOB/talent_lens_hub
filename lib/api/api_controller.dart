@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/LessonVideosDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
 
@@ -171,6 +172,34 @@ class ApiController {
     }
   }
 
+  // Enrolled Courses
+  Future<List<EnrolledCoursesDataModel>> fetchEnrolledCourses(
+      String userId) async {
+    try {
+      final response = await http
+          .get(Uri.parse("$webURL/training/get_enroll_courses/$userId"));
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        return data
+            .map((course) => EnrolledCoursesDataModel.fromJson(course))
+            .toList();
+      } else {
+        throw Exception(
+            "Failed to fetch courses. Status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      throw Exception("Error fetching courses: $e");
+    }
+  }
+
+  // Recommend Jobs by Interest (user_interest)
+
+  // Recommend jobs + Training for Job Description (job desc)
+
+  // Redeem Gift Code (UserID, GiftCode)
+
+  // RISHO SPEECH
   static Future<List<StudyToolsDataModel>> fetchTools(int userId) async {
     const apiUrl = '$baseUrl/gettoolslist/';
     final Uri uri = Uri.parse(apiUrl);

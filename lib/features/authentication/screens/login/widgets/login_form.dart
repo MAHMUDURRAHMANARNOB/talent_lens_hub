@@ -73,7 +73,14 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => Get.to(() => const NavigationMenu()),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const NavigationMenu(),
+                    ),
+                  );
+                },
                 child: const Text(TTexts.signIn),
               ),
             ),
