@@ -200,64 +200,55 @@ class ApiController {
   // Redeem Gift Code (UserID, GiftCode)
 
   // RISHO SPEECH
-  static Future<List<StudyToolsDataModel>> fetchTools(int userId) async {
-    const apiUrl = '$baseUrl/gettoolslist/';
-    final Uri uri = Uri.parse(apiUrl);
-
-    final response = await http.post(
-      uri,
-      body: {'userid': userId.toString()},
-    );
-
-    try {
-      if (response.statusCode == 200) {
-        final dynamic responseData = jsonDecode(response.body);
-        print("response $responseData");
-
-        if (responseData != null && responseData['studytools'] != null) {
-          final List<dynamic> toolsData = responseData['studytools'];
-          return toolsData
-              .map((data) => StudyToolsDataModel.fromJson(data))
-              .toList();
-        } else {
-          throw Exception('Invalid response format');
-        }
-
-        /*final List<dynamic> responseData =
-          jsonDecode(response.body)['StudyToolsDataModels'];
-      return responseData.map((data) => StudyToolsDataModel.fromJson(data)).toList();*/
-      } else {
-        throw Exception(
-            'Failed to load study tools. Status Code: ${response.statusCode}');
-      }
-    } catch (error) {
-      throw Exception('Failed to load study tools. Error: $error');
-    }
-  }
 
   /*Tools Response*/
-  Future<Map<String, dynamic>> getToolsResponse(
-      int userid,
-      String questiontext,
-      String subject,
-      String gradeclass,
-      String toolscode,
-      String maxline,
-      String isMobile) async {
-    final url = '$baseUrl/gettoolsresponse/';
-    print(
-        "Posting in api service $url, $userid, $questiontext, $subject, $gradeclass, $toolscode");
+  Future<Map<String, dynamic>> getMathSolutionResponse(
+    int userid,
+    String problemText,
+  ) async {
+    final url = '$baseUrl/SolvebanglaMath/';
+    print("Posting in api service $url, $userid, $problemText");
     try {
       final response = await http.post(
         Uri.parse(url),
         body: {
           'userid': userid.toString(),
-          'questiontext': questiontext.toString(),
-          'subject': subject.toString(),
-          'gradeclass': gradeclass.toString(),
-          'toolscode': toolscode.toString(),
-          'maxSentence': maxline.toString(),
-          'isMobileApp': isMobile.toString(),
+          'questiontext': problemText.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getMathSolutionResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getMathSolutionResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getMathSolutionResponse $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getCareerCounselorResponse(
+    int userid,
+    String problemText,
+    String skillText,
+    String interstTopic,
+    String experinceText,
+  ) async {
+    final url = '$baseUrl/careercounselor';
+    print(
+        "Posting in api service $url, $userid, $problemText, $skillText, $interstTopic, $experinceText");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userid.toString(),
+          'problemText': problemText.toString(),
+          'skillText': skillText.toString(),
+          'interstTopic': interstTopic.toString(),
+          'experinceText': experinceText.toString(),
         },
       );
       print("Response  $response");
@@ -271,6 +262,151 @@ class ApiController {
       }
     } catch (e) {
       throw Exception("Failed getToolsResponse $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getLifeCoachResponse(
+    int userid,
+    String problemText,
+  ) async {
+    final url = '$baseUrl/lifecoach';
+    print("Posting in api service $url, $userid, $problemText");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userid.toString(),
+          'problemText': problemText.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getToolsResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getToolsResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getToolsResponse $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getMentalHealthResponse(
+    int userid,
+    String problemText,
+  ) async {
+    final url = '$baseUrl/mentalhealth';
+    print("Posting in api service $url, $userid, $problemText");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userid.toString(),
+          'problemText': problemText.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getToolsResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getToolsResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getToolsResponse $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getRelationshipCoachResponse(
+    int userid,
+    String problemText,
+  ) async {
+    final url = '$baseUrl/relationshipcoach';
+    print("Posting in api service $url, $userid, $problemText");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userid.toString(),
+          'problemText': problemText.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getRelationshipCoachResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getRelationshipCoachResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getRelationshipCoachResponse $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getPsychologyResponse(
+    int userid,
+    String problemText,
+  ) async {
+    final url = '$baseUrl/psychologist';
+    print("Posting in api service $url, $userid, $problemText");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userid.toString(),
+          'problemText': problemText.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getPsychologyResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getPsychologyResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getPsychologyResponse $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getInterviewQuestionResponse(
+    int userId,
+    String jobTitle,
+    String jobDescription,
+    String noOfQuestions,
+  ) async {
+    final url = '$baseUrl/interviewQuestions';
+    print(
+        "Posting in api service $url, $userId, $jobTitle, $jobDescription, $noOfQuestions");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userId.toString(),
+          'jobtitle': jobTitle.toString(),
+          'jobtext': jobDescription.toString(),
+          'nunofQuestions': noOfQuestions.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getInterviewQuestionResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getInterviewQuestionResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getInterviewQuestionResponse $e");
     }
   }
 

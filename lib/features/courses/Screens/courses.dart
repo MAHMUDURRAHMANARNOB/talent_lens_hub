@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -113,7 +114,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
               child: selectedCategory == null
                   ? Center(
                       child: Text(
-                        "Select a category to access all courses",
+                        "Select a category to see all courses",
                       ),
                     )
                   : TSectionHeading(
@@ -177,7 +178,9 @@ class _CoursesScreenState extends State<CoursesScreen> {
                       size: 24, color: TColors.primaryColor),
                   onTap: () {
                     // Handle course item click
-                    print(course.id);
+                    if (kDebugMode) {
+                      print(course.id);
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -280,52 +283,65 @@ class _CoursesScreenState extends State<CoursesScreen> {
               itemBuilder: (context, index) {
                 final EnrolledCoursesDataModel course =
                     enrolledCoursesProvider.enrolledCourses[index];
-                return Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    // color: TColors.success.withOpacity(0.2),
-                    border: Border.all(color: TColors.primaryColor),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          course.courseName,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LessonListScreen(
+                          courseTitle: course.courseName,
+                          courseCategoryId: course.id,
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.0),
-                          decoration: BoxDecoration(
-                            color: TColors.primaryColor,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(8.0),
-                              bottomRight: Radius.circular(8.0),
-                            ),
-                          ),
+                    );
+                  },
+                  child: Container(
+                    width: 200,
+                    decoration: BoxDecoration(
+                      // color: TColors.success.withOpacity(0.2),
+                      border: Border.all(color: TColors.primaryColor),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            "Continue",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
+                            course.courseName,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            style: const TextStyle(
+                              fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          left: 0,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            decoration: BoxDecoration(
+                              color: TColors.primaryColor,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                              ),
+                            ),
+                            child: Text(
+                              "Continue",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },

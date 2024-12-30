@@ -6,8 +6,6 @@ import 'package:talent_lens_hub/features/courses/Provider/LessonVideosProvider.d
 import 'package:talent_lens_hub/utils/theme/theme.dart';
 
 import 'app.dart';
-import 'features/ToolsContent/providers/studyToolsProvider.dart';
-import 'features/ToolsContent/providers/toolsDataByCodeProvider.dart';
 import 'features/ToolsContent/providers/toolsReplyProvider.dart';
 import 'features/ToolsContent/providers/toolsResponseProvider.dart';
 import 'features/courses/Provider/CourseContentProvider.dart';
@@ -36,11 +34,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => VideoQuestionResponseProvider()),
         ChangeNotifierProvider(create: (_) => EnrolledCoursesProvider()),
         // ChangeNotifierProvider(create: (_) => LessonProvider()),
-        ChangeNotifierProvider(
-            create: (context) => StudyToolsProvider(userId: 0)),
-        ChangeNotifierProvider(
-          create: (context) => ToolsDataProvider(),
-        ),
+
         ChangeNotifierProvider(
           create: (context) => ToolsResponseProvider(),
         ),

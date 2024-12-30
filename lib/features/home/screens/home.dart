@@ -17,6 +17,7 @@ import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../courses/CourseContent/screens/LessonListScreen.dart';
 import '../../courses/DataModel/EnrolledCoursesDataModel.dart';
 import '../../courses/Provider/EnrolledCoursesProvider.dart';
 
@@ -82,168 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: TSizes.spaceBtwItems),
                 // Recommended Courses
-                /*Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: TSizes.defaultSpace / 2),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TSectionHeading(
-                        title: "Popular Courses",
-                        buttonTitle: "Show All",
-                        showActionButton: true,
-                        textColor: TColors.primaryColor,
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Container(
-                              // width: 250,
-                              padding: EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                // color: TColors.primaryColor.withOpacity(0.2),
-                                border: Border.all(
-                                  color: TColors.primaryColor,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 200,
-                                    child: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(
-                                          dark
-                                              ? "assets/images/dashboard_images/career_dark.png"
-                                              : "assets/images/dashboard_images/career_counselor.png",
-                                          width: 60,
-                                          height: 60,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(6.0),
-                                          decoration: BoxDecoration(
-                                            color: Colors.lightBlue
-                                                .withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(6.0),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text("4.8"),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.amberAccent,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    "Digital Marketing",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text("Total Enrolled:"),
-                                      Text(
-                                        "1260",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10.0),
-                            Container(
-                              // width: 250,
-                              padding: EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                // color: TColors.primaryColor.withOpacity(0.2),
-                                border: Border.all(
-                                  color: TColors.primaryColor,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 200,
-                                    child: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(
-                                          dark
-                                              ? "assets/images/dashboard_images/career_dark.png"
-                                              : "assets/images/dashboard_images/career_counselor.png",
-                                          width: 60,
-                                          height: 60,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(6.0),
-                                          decoration: BoxDecoration(
-                                            color: Colors.lightBlue
-                                                .withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(6.0),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text("4.8"),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.amberAccent,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    "Digital Marketing",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text("Total Enrolled:"),
-                                      Text(
-                                        "1260",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),*/
 
                 //   Categories
                 const Padding(
@@ -265,46 +104,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Expanded(
                                 child: PDContainer(
-                                  title: "CV Builder",
-                                  // image: TImages.cvBuilderImage,
-                                  icon: Icons.remove_from_queue,
-                                  bgColor: TColors.primaryColor,
+                                  title: "Interview \nQuestion",
+                                  // image: TImages.interviewQuestionImage,
+                                  icon: Icons.interpreter_mode,
+                                  bgColor: Colors.teal,
+                                  toolsName: 'Interview Questions',
                                 ),
                               ),
                               SizedBox(width: 10),
                               // Cover Letter
                               Expanded(
                                 child: PDContainer(
-                                  title: "Cover Letter",
+                                  title: "Cover \nLetter",
                                   // image: TImages.coverLetterImage,
                                   icon: Iconsax.recovery_convert,
                                   bgColor: TColors.secondaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: TSizes.spaceBtwItems / 2,
-                          ),
-                          // INTERVIEW QUESTION
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: PDContainer(
-                                  title: "Interview \nQuestion",
-                                  // image: TImages.interviewQuestionImage,
-                                  icon: Icons.interpreter_mode,
-                                  bgColor: Colors.teal,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: PDContainer(
-                                  title: "Exam Preparation",
-                                  // image: TImages.examPreparationImage,
-                                  icon: Icons.star,
-                                  bgColor: Colors.brown,
+                                  toolsName: "Cover Letter",
                                 ),
                               ),
                             ],
@@ -339,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             image: "assets/images/dashboard_images/math.png",
                             title: "Math Solution",
                             color: TColors.primaryColor,
-                            staticToolsCode: '',
+                            toolsName: "Math Solution",
                           ),
                         ),
                         const Expanded(
@@ -348,16 +163,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "assets/images/dashboard_images/career_counselor.png",
                             title: "Career Counselor",
                             color: TColors.primaryColor,
-                            staticToolsCode: '',
+                            toolsName: "Career Counselor",
                           ),
                         ),
                         const Expanded(
                           child: AiHelperContainer(
                             image:
                                 "assets/images/dashboard_images/life_coach.png",
-                            title: "Life Couch",
+                            title: "Life Coach",
                             color: TColors.primaryColor,
-                            staticToolsCode: '',
+                            toolsName: "Life Coach",
                           ),
                         ),
                       ],
@@ -378,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "assets/images/dashboard_images/mental_health.png",
                             title: "Mental Health",
                             color: TColors.primaryColor,
-                            staticToolsCode: '',
+                            toolsName: "Mental Health",
                           ),
                         ),
                         Expanded(
@@ -387,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "assets/images/dashboard_images/relationship_coach.png",
                             title: "Relationship Coach",
                             color: TColors.primaryColor,
-                            staticToolsCode: '',
+                            toolsName: "Relationship Coach",
                           ),
                         ),
                         Expanded(
@@ -396,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "assets/images/dashboard_images/psychology.png",
                             title: "Psychology",
                             color: TColors.primaryColor,
-                            staticToolsCode: '',
+                            toolsName: "Psychology",
                           ),
                         ),
                       ],
@@ -434,52 +249,65 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 final EnrolledCoursesDataModel course =
                     enrolledCoursesProvider.enrolledCourses[index];
-                return Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    // color: TColors.success.withOpacity(0.2),
-                    border: Border.all(color: TColors.primaryColor),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          course.courseName,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LessonListScreen(
+                          courseTitle: course.courseName,
+                          courseCategoryId: course.id,
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.0),
-                          decoration: BoxDecoration(
-                            color: TColors.primaryColor,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(8.0),
-                              bottomRight: Radius.circular(8.0),
-                            ),
-                          ),
+                    );
+                  },
+                  child: Container(
+                    width: 200,
+                    decoration: BoxDecoration(
+                      // color: TColors.success.withOpacity(0.2),
+                      border: Border.all(color: TColors.primaryColor),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            "Continue",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
+                            course.courseName,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            style: const TextStyle(
+                              fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          left: 0,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            decoration: BoxDecoration(
+                              color: TColors.primaryColor,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                              ),
+                            ),
+                            child: Text(
+                              "Continue",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },

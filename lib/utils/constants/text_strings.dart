@@ -2,14 +2,24 @@ class TTexts {
   // -- Global Texts
 
   // -- Onboarding Texts
-  static const String onBoardingTitle1 = "Choose your Product";
-  static const String onBoardingTitle2 = "Select Payment Method";
-  static const String onBoardingTitle3 = "Deliver at your Door Step";
+  static const String onBoardingTitle1 = "Welcome to Your Career Journey";
+  static const String onBoardingTitle2 = "Master Your Interview Skills";
+  static const String onBoardingTitle3 =
+      "Learn and Grow with Interactive Courses";
 
-  static const String onBoardingSubTitle1 = "Welcome to ...";
-  static const String onBoardingSubTitle2 = "For Seamless Transactions...";
+  static const String onBoardingSubTitle1 =
+      "Unlock Your Potential with Shonod-AI!";
+  static const String onBoardingSubTitle2 =
+      "Ace Every Interview with Tailored Questions!";
   static const String onBoardingSubTitle3 =
-      "From our shop to your door Step ...";
+      " Interactive Learning Powered by Shonod-AI!";
+
+  static const String onBoardingDescription1 =
+      "Get personalized guidance on career counseling, relationships, mental health, and math problem solutions to set you on the right path.";
+  static const String onBoardingDescription2 =
+      "Receive an unlimited number of interview questions based on your job title or description, plus get a customized cover letter to impress employers.";
+  static const String onBoardingDescription3 =
+      "Access a vast library of courses where you can engage with lessons and ask questions to deepen your understanding and enhance your skills.";
 
   // -- Authentication Form Texts
   static const String firstName = "First Name";

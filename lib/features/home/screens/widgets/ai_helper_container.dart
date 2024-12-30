@@ -11,13 +11,13 @@ class AiHelperContainer extends StatelessWidget {
     required this.image,
     required this.title,
     required this.color,
-    required this.staticToolsCode,
+    required this.toolsName,
   });
 
   final String title;
   final String image;
   final Color color;
-  final String staticToolsCode;
+  final String toolsName;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,7 @@ class AiHelperContainer extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  ToolsContentScreen(staticToolsCode: staticToolsCode)),
+              builder: (context) => ToolsContentScreen(toolsName: toolsName)),
         );
       },
       child: Container(
