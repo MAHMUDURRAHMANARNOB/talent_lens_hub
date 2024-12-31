@@ -377,6 +377,7 @@ class ApiController {
     }
   }
 
+  // Interview Question response
   Future<Map<String, dynamic>> getInterviewQuestionResponse(
     int userId,
     String jobTitle,
@@ -407,6 +408,38 @@ class ApiController {
       }
     } catch (e) {
       throw Exception("Failed getInterviewQuestionResponse $e");
+    }
+  }
+
+  // Github Question Response
+  Future<Map<String, dynamic>> getCoverLetterResponse(
+    int userId,
+    String jobTitle,
+    String personalSkillTest,
+  ) async {
+    final url = '$baseUrl/writecoverletter';
+    print(
+        "Posting in api service $url, $userId, $jobTitle, $personalSkillTest");
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'userid': userId.toString(),
+          'jobtitle': jobTitle.toString(),
+          'personalskillltext': personalSkillTest.toString(),
+        },
+      );
+      print("Response  $response");
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        print("Response in getCoverLetterResponse " + response.body);
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception.
+        throw Exception('Failed to load data in getCoverLetterResponse');
+      }
+    } catch (e) {
+      throw Exception("Failed getCoverLetterResponse $e");
     }
   }
 

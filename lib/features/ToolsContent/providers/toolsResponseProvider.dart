@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:talent_lens_hub/features/ToolsContent/datamodel/CoverLetterResponseDataModel.dart';
 import 'package:talent_lens_hub/features/ToolsContent/datamodel/interviewQuestionResponseDataModel.dart';
 
 import '../../../api/api_controller.dart';
@@ -12,11 +13,15 @@ class ToolsResponseProvider extends ChangeNotifier {
 
   ToolsResponseDataModel? _toolsResponse;
   InterviewQuestionsResponseDataModel? _interviewQuestionsResponseDataModel;
+  CoverLetterResponseDataModel? _coverLetterResponseDataModel;
 
   ToolsResponseDataModel? get toolsResponse => _toolsResponse;
 
   InterviewQuestionsResponseDataModel? get interviewQuestionDataModel =>
       _interviewQuestionsResponseDataModel;
+
+  CoverLetterResponseDataModel? get coverLetterResponseDataModel =>
+      _coverLetterResponseDataModel;
 
   Future<void> fetchMathSolutionResponse(
     int userId,
@@ -189,6 +194,28 @@ class ToolsResponseProvider extends ChangeNotifier {
       notifyListeners();
     } catch (error) {
       print('Error in getInterviewQuestionResponse: $error');
+      throw Exception('Failed to load data. Check your network connection.');
+    }
+  }
+
+  Future<void> fetchCoverLetterResponse(
+    int userId,
+    String jobTitle,
+    String personalSkillText,
+  ) async {
+    print("inside fetchCoverLetterResponse");
+    try {
+      final response = await _apiService.getCoverLetterResponse(
+        userId,
+        jobTitle,
+        personalSkillText,
+      );
+      _coverLetterResponseDataModel =
+          CoverLetterResponseDataModel.fromJson(response);
+      print("Response from getCoverLetterResponse: $response");
+      notifyListeners();
+    } catch (error) {
+      print('Error in getCoverLetterResponse: $error');
       throw Exception('Failed to load data. Check your network connection.');
     }
   }

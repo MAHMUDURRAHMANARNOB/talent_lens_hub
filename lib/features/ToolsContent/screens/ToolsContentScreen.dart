@@ -418,6 +418,15 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                         _jobDescription,
                                         "10"),
                                   );
+                                } else if (widget.toolsName == "Cover Letter") {
+                                  _lessonComponents.add(
+                                    generateCoverLetterResponse(
+                                      context,
+                                      userID,
+                                      _jobTitle,
+                                      _personalSkills,
+                                    ),
+                                  );
                                 }
 
                                 questionTextFieldController.clear();
@@ -2217,6 +2226,133 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                   children: [
                     Text(
                       "Sorry: ${toolsResponseProvider.interviewQuestionDataModel!.message}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: TColors.primaryColor),
+                      onPressed: () {
+                        /*Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PackagesScreen()),
+                        );*/
+                      },
+                      child: const Text(
+                        "Buy Subscription",
+                        style: TextStyle(
+                          color: TColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        }
+      },
+    );
+  }
+
+  Widget generateCoverLetterResponse(
+    BuildContext context,
+    int userId,
+    String jobTitle,
+    String personalSkills,
+  ) {
+    bool _isPressed = false;
+    final toolsResponseProvider =
+        Provider.of<ToolsResponseProvider>(context, listen: false);
+    return FutureBuilder<void>(
+      future: toolsResponseProvider.fetchCoverLetterResponse(
+          userId, jobTitle, personalSkills),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
+                  child: Image.asset(
+                    "assets/images/animations/loader_tlh.gif",
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+                SizedBox(
+                  child: Shimmer.fromColors(
+                    baseColor: TColors.primaryColor,
+                    highlightColor: Colors.white,
+                    child: const Text(
+                      'Preparing...',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ); // Loading state
+        } else if (snapshot.hasError) {
+          return Container(
+            margin: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: TColors.primaryColor.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(
+                    "Sorry: ${toolsResponseProvider.coverLetterResponseDataModel!.message ?? "Server error"}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          if (toolsResponseProvider.coverLetterResponseDataModel != null &&
+              toolsResponseProvider.coverLetterResponseDataModel!.errorCode ==
+                  200) {
+            final response = toolsResponseProvider.coverLetterResponseDataModel;
+            return Container(
+              width: double.infinity,
+              child: MW.MarkdownWidget(
+                data: response!.coverLetter,
+                padding: EdgeInsets.all(10.0),
+                selectable: true,
+                config: MarkdownConfig.defaultConfig,
+                markdownGenerator: MarkdownGenerator(
+                    generators: [latexGenerator],
+                    inlineSyntaxList: [LatexSyntax()]),
+              ),
+            );
+          } else {
+            return Container(
+              margin: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: TColors.primaryColor.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Sorry: ${toolsResponseProvider.coverLetterResponseDataModel!.message}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

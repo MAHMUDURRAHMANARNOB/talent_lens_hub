@@ -272,6 +272,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
           ));
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (enrolledCoursesProvider.enrolledCourses.isEmpty) {
+          return Center(child: Text('No Courses Available at this moment'));
         } else {
           return Container(
             width: double.infinity,
