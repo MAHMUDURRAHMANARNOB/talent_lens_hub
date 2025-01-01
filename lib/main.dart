@@ -6,7 +6,6 @@ import 'package:talent_lens_hub/features/courses/Provider/LessonVideosProvider.d
 import 'package:talent_lens_hub/utils/theme/theme.dart';
 
 import 'app.dart';
-import 'features/ToolsContent/providers/toolsReplyProvider.dart';
 import 'features/ToolsContent/providers/toolsResponseProvider.dart';
 import 'features/courses/Provider/CourseContentProvider.dart';
 import 'features/courses/Provider/CourseListProvider.dart';
@@ -37,9 +36,6 @@ void main() {
 
         ChangeNotifierProvider(
           create: (context) => ToolsResponseProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ToolsReplyProvider(),
         ),
       ],
       child: TalentLensHub(),

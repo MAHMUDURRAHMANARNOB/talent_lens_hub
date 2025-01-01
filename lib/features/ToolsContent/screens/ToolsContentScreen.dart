@@ -18,7 +18,6 @@ import '../../../common/latexGenerator.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/helpers/helper_function.dart';
 import '../datamodel/studyToolsDataModel.dart';
-import '../providers/toolsReplyProvider.dart';
 import '../providers/toolsResponseProvider.dart';
 
 class ToolsContentScreen extends StatefulWidget {
@@ -50,9 +49,6 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
 
   late ToolsResponseProvider toolsResponseProvider =
       Provider.of<ToolsResponseProvider>(context, listen: false);
-
-  late ToolsReplyProvider toolsReplyProvider =
-      Provider.of<ToolsReplyProvider>(context, listen: false);
 
   File? _selectedImage;
   bool _isImageSelected = false;

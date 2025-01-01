@@ -10,6 +10,7 @@ import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.d
 import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
 import 'package:talent_lens_hub/features/courses/Provider/CourseListProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/EnrolledCoursesProvider.dart';
+import 'package:talent_lens_hub/features/courses/Screens/widgets/RandomNumberGenerator.dart';
 import 'package:talent_lens_hub/features/courses/Screens/widgets/course_container.dart';
 import 'package:talent_lens_hub/utils/constants/colors.dart';
 import 'package:talent_lens_hub/utils/constants/sizes.dart';
@@ -21,6 +22,7 @@ import '../DataModel/CourseContentDataModel.dart';
 import '../DataModel/TrainingCategoryDataModel.dart';
 import '../Provider/CourseContentProvider.dart';
 import '../Provider/TrainingCategoryProvider.dart';
+import 'enrolledCourses.dart';
 
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -92,13 +94,22 @@ class _CoursesScreenState extends State<CoursesScreen> {
             _courseCategoryList(),
 
             // In Progress Text
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
               child: TSectionHeading(
                 title: "In Progress",
                 showActionButton: true,
                 buttonTitle: "View All",
                 textColor: TColors.primaryColor,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EnrolledCourses(),
+                    ),
+                  );
+                },
               ),
             ),
 
@@ -135,6 +146,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                       : TColors.secondaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
                 margin: const EdgeInsets.symmetric(
                   horizontal: TSizes.defaultSpace / 2,
                   vertical: TSizes.spaceBtwItems / 2,
@@ -153,18 +165,40 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 5.0),
+                      SizedBox(height: 10.0),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Total Enrolled: ",
-                            style: TextStyle(),
+                          Row(
+                            children: [
+                              Text(
+                                "Total Enrolled: ",
+                                style: TextStyle(),
+                              ),
+                              Text(
+                                RandomNumberGenerator.generateRandomNumber(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: course.id.isEven
+                                      ? TColors.info
+                                      : TColors.secondaryColor,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "12068",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: TColors.secondaryColor,
+                          Container(
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                color: course.id.isEven
+                                    ? TColors.info
+                                    : TColors.secondaryColor,
+                                borderRadius: BorderRadius.circular(6.0)),
+                            child: Text(
+                              "Enroll Now",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -174,8 +208,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   /*leading: course.imgPath != null
                       ? Image.network(course.imgPath!)
                       : const Icon(Iconsax.book, color: TColors.primaryColor),*/
-                  trailing: const Icon(Iconsax.arrow_circle_right,
-                      size: 24, color: TColors.primaryColor),
+                  /*trailing: const Icon(Iconsax.arrow_circle_right,
+                      size: 24, color: TColors.primaryColor),*/
                   onTap: () {
                     // Handle course item click
                     if (kDebugMode) {

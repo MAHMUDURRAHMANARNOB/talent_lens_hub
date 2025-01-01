@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: TSizes.spaceBtwItems),
+                  // SizedBox(height: TSizes.spaceBtwItems),
                   // Recommended Courses
 
                   //   Categories

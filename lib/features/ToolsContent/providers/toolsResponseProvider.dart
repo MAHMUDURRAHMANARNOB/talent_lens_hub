@@ -143,37 +143,6 @@ class ToolsResponseProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchImageToolsResponse(
-      File questionImage,
-      int userId,
-      String questionText,
-      String subject,
-      String gradeClass,
-      String toolsCode,
-      String maxLine,
-      String isMobile) async {
-    print("inside fetchImageToolsResponse");
-    try {
-      final response = await _apiService.getImageToolsResponse(
-        questionImage,
-        userId,
-        questionText,
-        subject,
-        gradeClass,
-        toolsCode,
-        maxLine,
-        isMobile,
-      );
-      _toolsResponse = ToolsResponseDataModel.fromJson(response);
-
-      print("Response from fetchImageToolsResponse: $response");
-      notifyListeners();
-    } catch (error) {
-      print('Error in fetchImageToolsResponse: $error');
-      throw Exception('$error');
-    }
-  }
-
   Future<void> fetchInterviewQuestionResponse(
     int userId,
     String jobTitle,
