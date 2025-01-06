@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:talent_lens_hub/features/authentication/providers/auth_provider.dart';
 import 'package:talent_lens_hub/features/courses/CourseContent/screens/LessonListScreen.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
@@ -53,7 +54,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
   @override
   Widget build(BuildContext context) {
     final darkMode = THelperFunction.isDarkMode(context);
-    userId = 1;
+    userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
 
     courseListProvider = Provider.of<CourseListProvider>(context);
 
@@ -63,7 +64,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
           padding: EdgeInsets.zero,
           children: [
             // Search Bar
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: SearchBar(
                 backgroundColor: darkMode
@@ -88,7 +89,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   ),
                 ],
               ),
-            ),
+            ),*/
 
             // Courses Category Chip Row
             _courseCategoryList(),
@@ -176,7 +177,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                 style: TextStyle(),
                               ),
                               Text(
-                                RandomNumberGenerator.generateRandomNumber(),
+                                // RandomNumberGenerator.generateRandomNumber(),
+                                course.totalStudents.toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: course.id.isEven

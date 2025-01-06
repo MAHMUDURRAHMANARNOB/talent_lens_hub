@@ -9,6 +9,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/helpers/helper_function.dart';
+import '../../../authentication/providers/auth_provider.dart';
 
 class VideoPlayerBoard extends StatefulWidget {
   final String videoUrl;
@@ -75,7 +76,7 @@ class _VideoPlayerBoardState extends State<VideoPlayerBoard> {
   Widget build(BuildContext context) {
     dark = THelperFunction.isDarkMode(context);
 
-    final userId = /*Provider.of<AuthProvider>(context).user?.id ?? 1*/ 1;
+    final userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
     return Scaffold(
       appBar: AppBar(
         title: const Text(

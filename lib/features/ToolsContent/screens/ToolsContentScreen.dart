@@ -17,6 +17,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../../common/latexGenerator.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../authentication/providers/auth_provider.dart';
 import '../datamodel/studyToolsDataModel.dart';
 import '../providers/toolsResponseProvider.dart';
 
@@ -57,7 +58,7 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
   bool _isReply = false;
   bool _isNewQuestion = false;
 
-  late int userID = 11;
+  late int userID;
   late bool isLoading = true;
 
   late String _question = '';
@@ -84,6 +85,7 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
   @override
   Widget build(BuildContext context) {
     dark = THelperFunction.isDarkMode(context);
+    userID = Provider.of<AuthProvider>(context, listen: false).user!.id;
 
     // toolsDataProvider = Provider.of<ToolsDataProvider>(context, listen: false);
 

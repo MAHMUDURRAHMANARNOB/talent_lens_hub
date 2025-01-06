@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/constants/colors.dart';
+import '../../authentication/providers/auth_provider.dart';
 import '../CourseContent/screens/LessonListScreen.dart';
 import '../DataModel/EnrolledCoursesDataModel.dart';
 import '../Provider/EnrolledCoursesProvider.dart';
@@ -23,7 +25,7 @@ class _EnrolledCoursesState extends State<EnrolledCourses> {
 
   @override
   Widget build(BuildContext context) {
-    userId = 1;
+    userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
 
     return Scaffold(
       appBar: AppBar(),

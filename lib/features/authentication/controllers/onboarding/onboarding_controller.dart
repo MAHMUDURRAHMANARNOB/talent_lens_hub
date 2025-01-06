@@ -39,4 +39,10 @@ class OnboardingController extends GetxController {
     currentPageIndex.value = 2; // fixed to the last screen index
     pageController.jumpToPage(2);
   }
+
+  @override
+  void onClose() {
+    pageController.dispose();
+    super.onClose();
+  }
 }

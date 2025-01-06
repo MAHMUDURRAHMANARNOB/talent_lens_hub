@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
+import '../../../providers/auth_provider.dart';
 import '../verify_email.dart';
 
-class TSignupForm extends StatelessWidget {
+class TSignupForm extends StatefulWidget {
   const TSignupForm({
     super.key,
     required this.dark,
@@ -16,66 +18,112 @@ class TSignupForm extends StatelessWidget {
   final bool dark;
 
   @override
+  State<TSignupForm> createState() => _TSignupFormState();
+}
+
+class _TSignupFormState extends State<TSignupForm> {
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _obscureText = true;
+
+  // Initially hide the password
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Form(
       child: Column(
         children: [
           // First Name and Last Name
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  expands: false,
-                  decoration: const InputDecoration(
-                      labelText: TTexts.firstName,
-                      prefixIcon: Icon(Iconsax.user)),
-                ),
+          TextFormField(
+            controller: fullNameController,
+            expands: false,
+            cursorColor: TColors.primaryColor,
+            decoration: InputDecoration(
+              labelText: "Full Name",
+              hintText: "Enter your full name",
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: TColors.primaryColor), // Border color when focused
+                borderRadius:
+                    BorderRadius.circular(10.0), // Border radius when focused
               ),
-              const SizedBox(width: TSizes.spaceBtwInputFields),
-              Expanded(
-                child: TextFormField(
-                  expands: false,
-                  decoration: const InputDecoration(
-                      labelText: TTexts.lastName,
-                      prefixIcon: Icon(Iconsax.user)),
-                ),
+              prefixIcon: Icon(
+                Iconsax.user,
+                color: TColors.primaryColor,
               ),
-            ],
+            ),
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
           //   UserName
+
+          //   Phone No
           TextFormField(
+            controller: phoneNumberController,
             expands: false,
-            decoration: const InputDecoration(
-                labelText: TTexts.username,
-                prefixIcon: Icon(Iconsax.user_edit)),
+            cursorColor: TColors.primaryColor,
+            decoration: InputDecoration(
+              labelText: TTexts.phoneNo,
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: TColors.primaryColor), // Border color when focused
+                borderRadius:
+                    BorderRadius.circular(10.0), // Border radius when focused
+              ),
+              prefixIcon: Icon(Iconsax.call, color: TColors.primaryColor),
+            ),
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
           //   Email
           TextFormField(
+            controller: emailController,
             expands: false,
-            decoration: const InputDecoration(
+            cursorColor: TColors.primaryColor,
+            decoration: InputDecoration(
               labelText: TTexts.email,
-              prefixIcon: Icon(Iconsax.direct),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: TColors.primaryColor), // Border color when focused
+                borderRadius:
+                    BorderRadius.circular(10.0), // Border radius when focused
+              ),
+              prefixIcon: Icon(Iconsax.direct, color: TColors.primaryColor),
             ),
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
-          //   Phone No
-          TextFormField(
-            expands: false,
-            decoration: const InputDecoration(
-              labelText: TTexts.phoneNo,
-              prefixIcon: Icon(Iconsax.call),
-            ),
-          ),
-          const SizedBox(height: TSizes.spaceBtwInputFields),
+
           //   Password
           TextFormField(
-            expands: false,
-            decoration: const InputDecoration(
+            controller: passwordController,
+            cursorColor: TColors.primaryColor,
+            obscureText: _obscureText,
+            decoration: InputDecoration(
               labelText: TTexts.password,
-              prefixIcon: Icon(Iconsax.password_check),
-              suffixIcon: Icon(Iconsax.eye_slash),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: TColors.primaryColor), // Border color when focused
+                borderRadius:
+                    BorderRadius.circular(10.0), // Border radius when focused
+              ),
+              prefixIcon: Icon(
+                Iconsax.password_check,
+                color: TColors.primaryColor,
+              ),
+              suffixIcon: IconButton(
+                onPressed: _togglePasswordVisibility,
+                icon: Icon(
+                  _obscureText ? Iconsax.eye : Iconsax.eye_slash,
+                  color: TColors.darkGrey,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
@@ -88,38 +136,32 @@ class TSignupForm extends StatelessWidget {
                 height: 24,
                 child: Checkbox(
                   value: true,
+                  activeColor: TColors.primaryColor,
                   onChanged: (value) {},
                 ),
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                        text: TTexts.iAgreeTo,
-                        style: Theme.of(context).textTheme.bodySmall),
-                    TextSpan(
-                      text: " ${TTexts.privacyPolicy} ",
-                      style: Theme.of(context).textTheme.bodyMedium!.apply(
-                            color: dark ? TColors.white : TColors.primaryColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor:
-                                dark ? TColors.white : TColors.primaryColor,
-                          ),
-                    ),
-                    TextSpan(
-                        text: "and",
-                        style: Theme.of(context).textTheme.bodySmall),
-                    TextSpan(
-                      text: " ${TTexts.termsOfUse} ",
-                      style: Theme.of(context).textTheme.bodyMedium!.apply(
-                            color: dark ? TColors.white : TColors.primaryColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor:
-                                dark ? TColors.white : TColors.primaryColor,
-                          ),
-                    ),
-                  ],
+              Expanded(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                          text: "I accept the ",
+                          style: Theme.of(context).textTheme.bodySmall),
+                      TextSpan(
+                        text: "Terms and Conditions",
+                        style: Theme.of(context).textTheme.bodyMedium!.apply(
+                              color: widget.dark
+                                  ? TColors.white
+                                  : TColors.primaryColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: widget.dark
+                                  ? TColors.white
+                                  : TColors.primaryColor,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -127,15 +169,69 @@ class TSignupForm extends StatelessWidget {
           const SizedBox(height: TSizes.spaceBtwInputFields),
 
           //   Signup Button
-          SizedBox(
+          /*SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => const VerifyEmailScreen());
+                */ /*Get.to(() => const VerifyEmailScreen());*/ /*
               },
               child: const Text(TTexts.createAccount),
             ),
-          ),
+          ),*/
+          authProvider.isLoading
+              ? CircularProgressIndicator(color: TColors.primaryColor)
+              : SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      /*Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VerifyEmailScreen(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            otp: "1234",
+                          ),
+                        ),
+                      );*/
+                      await authProvider.signUpUser(
+                        name: fullNameController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        phone: phoneNumberController.text,
+                        userType: "J",
+                      );
+
+                      final response = authProvider.signupResponse;
+
+                      if (response != null && response.success) {
+                        /*ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  "Sign up successful! OTP: ${response.userOtp}")),
+                        );*/
+                        print("Sign up successful! OTP: ${response.userOtp}");
+                        // Navigator.push(context, route)
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VerifyEmailScreen(
+                              email: emailController.text,
+                              password: passwordController.text,
+                              otp: response.userOtp.toString(),
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text("Error: ${response?.message}")),
+                        );
+                      }
+                    },
+                    child: Text("Proceed"),
+                  ),
+                ),
         ],
       ),
     );

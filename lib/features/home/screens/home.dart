@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
 import 'package:talent_lens_hub/features/courses/Screens/enrolledCourses.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/ai_helper_container.dart';
-import 'package:talent_lens_hub/features/home/screens/widgets/home_app_bar.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/pd_containers.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/primary_header_container.dart';
+import 'package:talent_lens_hub/features/subscriptions/screens/SubscriptionPlansScreen.dart';
 import 'package:talent_lens_hub/utils/device/device_utility.dart';
 
 import '../../../common/widgets/custom_shapes/containers/circular_container.dart';
@@ -17,7 +18,9 @@ import '../../../common/widgets/texts/section_heading.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/constants/text_strings.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../authentication/providers/auth_provider.dart';
 import '../../courses/CourseContent/screens/LessonListScreen.dart';
 import '../../courses/DataModel/EnrolledCoursesDataModel.dart';
 import '../../courses/Provider/EnrolledCoursesProvider.dart';
@@ -31,13 +34,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late int userId;
+  late String userName;
   late EnrolledCoursesProvider enrolledCoursesProvider =
       EnrolledCoursesProvider();
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunction.isDarkMode(context);
-    userId = 1;
+    userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
+    userName = Provider.of<AuthProvider>(context, listen: false).user!.name!;
     final double height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
@@ -62,9 +67,55 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const THomeAppBar(),
+                  // HEADER
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          TTexts.homeAppbarTitle,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .apply(color: TColors.primaryColor),
+                        ),
+                        Text(
+                          userName,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .apply(color: TColors.primaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
                   // SizedBox(height: TSizes.defaultSpace),
 
+                  // Subscription Plans
+                  /*Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SubscriptionListScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              child: Text("View Subscription Plans")),
+                        ),
+                      ],
+                    ),
+                  ),*/
                   // Enrolled courses
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
