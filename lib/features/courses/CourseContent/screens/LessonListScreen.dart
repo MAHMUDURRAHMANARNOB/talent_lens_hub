@@ -13,9 +13,13 @@ import 'LessonBoardScreen.dart';
 class LessonListScreen extends StatefulWidget {
   final String courseTitle;
   final int courseCategoryId;
+  final bool isEnrolled;
 
   const LessonListScreen(
-      {super.key, required this.courseTitle, required this.courseCategoryId});
+      {super.key,
+      required this.courseTitle,
+      required this.courseCategoryId,
+      required this.isEnrolled});
 
   @override
   State<LessonListScreen> createState() => _LessonListScreenState();
@@ -27,100 +31,8 @@ class _LessonListScreenState extends State<LessonListScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunction.isDarkMode(context);
+    late bool isEnrolled = widget.isEnrolled;
 
-    /*return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.courseTitle,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "12th Grade",
-                    style: TextStyle(
-                      color: TColors.darkGrey,
-                    ),
-                  ),
-                  SizedBox(
-                    height: TSizes.md,
-                  ),
-                  Container(
-                    child: const Text("Lessons: "),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 10, // 10 items in the list
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LessonBoardScreen(
-                                lessonTitle: "Lesson ${index + 1}",
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          padding: EdgeInsets.all(12.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 1,
-                                blurRadius: 6,
-                                offset: Offset(0, 1),
-                                // blurStyle: BlurStyle.inner
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  color: TColors.primaryColor.withOpacity(0.25),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                child: Icon(
-                                  Icons.chrome_reader_mode_outlined,
-                                  // Replace with your desired icon
-                                  color: TColors.primaryColor,
-                                ),
-                              ),
-                              SizedBox(width: 16.0),
-                              Text(
-                                'Lesson ${index + 1}',
-                                // Dynamically set the text
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );*/
     return Scaffold(
       appBar: AppBar(title: Text('Course Content')),
       body: SingleChildScrollView(
@@ -164,7 +76,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
                             ),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.start,
                           ),
                         ),
                         Container(
@@ -176,6 +88,97 @@ class _LessonListScreenState extends State<LessonListScreen> {
                           child: Text(
                             courseContent[0].courseDescription,
                             // textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Visibility(
+                          visible: !isEnrolled,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: TColors.secondaryColor,
+                              elevation: 6,
+                              side: BorderSide(color: TColors.secondaryColor),
+                            ),
+                            onPressed: () {},
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                "Enroll now",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.check_circle_outline_outlined,
+                                        size: 24),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "Total Enrolled Students: ",
+                                    ),
+                                    Text(
+                                      courseContent[0].enrolled.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: TColors.primaryColor),
+                                      // textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.check_circle_outline_outlined,
+                                        size: 24),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "Difficulty Level: ",
+                                    ),
+                                    Text(
+                                      courseContent[0]
+                                          .difficultyLevel
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: TColors.primaryColor),
+                                      // textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.check_circle_outline_outlined,
+                                        size: 24),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "Skills: ",
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        courseContent[0].tagText.toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: TColors.primaryColor),
+                                        // textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Text(
@@ -233,7 +236,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                     SizedBox(
                                                       height: 5.0,
                                                     ),
-                                                    Container(
+                                                    /*Container(
                                                       padding:
                                                           EdgeInsets.symmetric(
                                                               horizontal: 10.0,
@@ -257,17 +260,11 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                             color:
                                                                 Colors.white),
                                                       ),
-                                                    )
+                                                    )*/
                                                   ],
                                                 ),
                                               ),
                                               SizedBox(width: 10.0),
-                                              Icon(
-                                                Icons.keyboard_arrow_down,
-                                                color: lesson.isFree == 'Y'
-                                                    ? TColors.success
-                                                    : TColors.info,
-                                              ),
                                             ],
                                           ),
                                         ],
@@ -276,24 +273,84 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                   )
                                 : GestureDetector(
                                     onTap: () async {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LessonBoardScreen(
-                                                    lessonTitle:
-                                                        lesson.lessonTitle,
-                                                    lessonId: lesson.id)),
-                                      );
+                                      isEnrolled
+                                          ? Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LessonBoardScreen(
+                                                        lessonTitle:
+                                                            lesson.lessonTitle,
+                                                        lessonId: lesson.id),
+                                              ),
+                                            )
+                                          : lesson.isFree != "N"
+                                              ? Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LessonBoardScreen(
+                                                            lessonTitle: lesson
+                                                                .lessonTitle,
+                                                            lessonId:
+                                                                lesson.id),
+                                                  ),
+                                                )
+                                              : showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      content: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Image.asset(
+                                                              "assets/images/apology.png"),
+                                                          Text(
+                                                            "Sorry!",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 30),
+                                                          ),
+                                                          Text(
+                                                            "You have to enroll first to access this course content",
+                                                          ),
+                                                          SizedBox(
+                                                              height: 10.0),
+                                                          ElevatedButton(
+                                                            onPressed: () {},
+                                                            child: SizedBox(
+                                                              width: double
+                                                                  .infinity,
+                                                              child: Text(
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                "Enroll Now",
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                );
                                     },
                                     child: Container(
                                       margin: EdgeInsets.all(5.0),
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          color: lesson.isFree == 'Y'
-                                              ? TColors.success.withOpacity(0.1)
-                                              : TColors.info.withOpacity(0.1)),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        color: lesson.isFree == 'Y' ||
+                                                lesson.isFree == "M"
+                                            ? TColors.success.withOpacity(0.1)
+                                            : TColors.secondaryColor
+                                                .withOpacity(0.1),
+                                      ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Column(
@@ -315,9 +372,12 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                   child: Icon(
                                                     Iconsax.book,
                                                     size: 20.0,
-                                                    color: lesson.isFree == 'Y'
+                                                    color: lesson.isFree ==
+                                                                'Y' ||
+                                                            lesson.isFree == "M"
                                                         ? TColors.success
-                                                        : TColors.info,
+                                                        : TColors
+                                                            .secondaryColor,
                                                   ),
                                                 ),
                                                 SizedBox(width: 10.0),
@@ -348,11 +408,13 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                                 vertical: 5.0),
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: lesson
-                                                                      .isFree ==
-                                                                  'Y'
+                                                          color: lesson.isFree ==
+                                                                      'Y' ||
+                                                                  lesson.isFree ==
+                                                                      "M"
                                                               ? TColors.success
-                                                              : TColors.info,
+                                                              : TColors
+                                                                  .secondaryColor,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -360,9 +422,12 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          lesson.isFree == 'Y'
-                                                              ? "Free"
-                                                              : "Member",
+                                                          lesson.isFree ==
+                                                                      'Y' ||
+                                                                  lesson.isFree ==
+                                                                      "M"
+                                                              ? "View"
+                                                              : "Enroll",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white),

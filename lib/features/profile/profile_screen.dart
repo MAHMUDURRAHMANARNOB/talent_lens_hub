@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:talent_lens_hub/features/authentication/providers/UserStatesProvider.dart';
@@ -126,6 +127,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Consumer<UserStatesProvider>(
                         builder: (context, tokenProvider, child) {
+                      if (tokenProvider.userStats == null) {
+                        // Show loader while data is being fetched
+                        return Center(
+                          child: SpinKitChasingDots(
+                            color: TColors.primaryColor,
+                            size: 20,
+                          ),
+                        );
+                      }
+                      if (tokenProvider.userStats!.availableTickets == null) {
+                        // Show message if no data is found
+                        return Center(
+                          child: Text(
+                            "No data available",
+                            style: TextStyle(
+                              color: TColors.primaryColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      }
+                      // Display the data if available
                       return Container(
                         margin: EdgeInsets.all(10.0),
                         padding: EdgeInsets.all(10.0),

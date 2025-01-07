@@ -79,6 +79,7 @@ class _EnrolledCoursesState extends State<EnrolledCourses> {
                       builder: (context) => LessonListScreen(
                         courseTitle: course.courseName,
                         courseCategoryId: course.id,
+                        isEnrolled: true,
                       ),
                     ),
                   );

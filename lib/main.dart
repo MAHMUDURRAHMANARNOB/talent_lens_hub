@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shurjopay/utilities/functions.dart';
+import 'package:talent_lens_hub/features/courses/Provider/CheckCourseEnrollmentProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/EnrolledCoursesProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/LessonContentProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/LessonVideosProvider.dart';
@@ -41,6 +42,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => VideoQuestionResponseProvider()),
         ChangeNotifierProvider(create: (_) => EnrolledCoursesProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider(create: (_) => CheckCourseEnrollmentProvider()),
 
         // ChangeNotifierProvider(create: (_) => LessonProvider()),
 

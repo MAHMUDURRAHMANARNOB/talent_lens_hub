@@ -5,14 +5,16 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talent_lens_hub/features/authentication/providers/auth_provider.dart';
 import 'package:talent_lens_hub/features/courses/CourseContent/screens/LessonListScreen.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/CheckCourseEnrollmentDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
+import 'package:talent_lens_hub/features/courses/Provider/CheckCourseEnrollmentProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/CourseListProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/EnrolledCoursesProvider.dart';
 import 'package:talent_lens_hub/features/courses/Screens/widgets/RandomNumberGenerator.dart';
-import 'package:talent_lens_hub/features/courses/Screens/widgets/course_container.dart';
 import 'package:talent_lens_hub/utils/constants/colors.dart';
 import 'package:talent_lens_hub/utils/constants/sizes.dart';
 
@@ -38,6 +40,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
   late TrainingCategoryProvider trainingCategoryProvider =
       TrainingCategoryProvider();
   late CourseListProvider courseListProvider = CourseListProvider();
+  late CheckCourseEnrollmentProvider checkCourseEnrollmentProvider =
+      CheckCourseEnrollmentProvider();
   late EnrolledCoursesProvider enrolledCoursesProvider =
       EnrolledCoursesProvider();
 
@@ -91,15 +95,12 @@ class _CoursesScreenState extends State<CoursesScreen> {
               ),
             ),*/
 
-            // Courses Category Chip Row
-            _courseCategoryList(),
-
             // In Progress Text
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
               child: TSectionHeading(
-                title: "In Progress",
+                title: "Enrolled Courses",
                 showActionButton: true,
                 buttonTitle: "View All",
                 textColor: TColors.primaryColor,
@@ -113,11 +114,13 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 },
               ),
             ),
-
             // In Progress Items Row
             _enrolledCourseList(),
 
             SizedBox(height: TSizes.spaceBtwSections / 2),
+
+            // Courses Category Chip Row
+            _courseCategoryList(),
 
             // Category Wise Name
             Padding(
@@ -139,7 +142,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
             // Render course list
             ...courseListProvider.courses.map((course) {
-              return Container(
+              /*return Container(
                 // color: Colors.white,
                 decoration: BoxDecoration(
                   color: course.id.isEven
@@ -147,7 +150,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
                       : TColors.secondaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
                 margin: const EdgeInsets.symmetric(
                   horizontal: TSizes.defaultSpace / 2,
                   vertical: TSizes.spaceBtwItems / 2,
@@ -188,30 +190,19 @@ class _CoursesScreenState extends State<CoursesScreen> {
                               ),
                             ],
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                                color: course.id.isEven
-                                    ? TColors.info
-                                    : TColors.secondaryColor,
-                                borderRadius: BorderRadius.circular(6.0)),
-                            child: Text(
-                              "Enroll Now",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          EnrollButton(
+                            courseId: course.id,
+                            userId: userId,
                           ),
                         ],
                       ),
                     ],
                   ),
-                  /*leading: course.imgPath != null
+                  */ /*leading: course.imgPath != null
                       ? Image.network(course.imgPath!)
-                      : const Icon(Iconsax.book, color: TColors.primaryColor),*/
-                  /*trailing: const Icon(Iconsax.arrow_circle_right,
-                      size: 24, color: TColors.primaryColor),*/
+                      : const Icon(Iconsax.book, color: TColors.primaryColor),*/ /*
+                  */ /*trailing: const Icon(Iconsax.arrow_circle_right,
+                      size: 24, color: TColors.primaryColor),*/ /*
                   onTap: () {
                     // Handle course item click
                     if (kDebugMode) {
@@ -228,6 +219,131 @@ class _CoursesScreenState extends State<CoursesScreen> {
                     );
                   },
                 ),
+              );*/
+              return FutureBuilder<CheckEnrollmentDataModel?>(
+                future: checkCourseEnrollmentProvider.fetchEnrollCourse(
+                    course.id, userId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return shimmerEffectContainer();
+                  }
+
+                  final isEnrolled = snapshot.data != null;
+
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: isEnrolled
+                          ? TColors.success.withOpacity(0.1)
+                          : TColors.secondaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: TSizes.defaultSpace / 2,
+                      vertical: TSizes.spaceBtwItems / 2,
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        course.courseName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            course.courseDescription,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text("Total Enrolled: "),
+                                  Text(
+                                    course.totalStudents.toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: isEnrolled
+                                          ? TColors.success
+                                          : TColors.secondaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  color: isEnrolled
+                                      ? TColors.success
+                                      : TColors.secondaryColor,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                child: Text(
+                                  isEnrolled
+                                      ? "Continue Learning"
+                                      : "Enroll Now",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        if (isEnrolled) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LessonListScreen(
+                                courseTitle: course.courseName,
+                                courseCategoryId: course.id,
+                                isEnrolled: isEnrolled,
+                              ),
+                            ),
+                          );
+                        } else {
+                          /*showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      course.courseName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(course.courseDescription),
+                                  ],
+                                ),
+                              );
+                            },
+                          );*/
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LessonListScreen(
+                                courseTitle: course.courseName,
+                                courseCategoryId: course.id,
+                                isEnrolled: isEnrolled,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  );
+                },
               );
             }).toList(),
           ],
@@ -329,6 +445,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         builder: (context) => LessonListScreen(
                           courseTitle: course.courseName,
                           courseCategoryId: course.id,
+                          isEnrolled: true,
                         ),
                       ),
                     );
@@ -430,6 +547,74 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 : FontWeight.normal,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget shimmerEffectContainer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: TSizes.defaultSpace / 2,
+        vertical: TSizes.spaceBtwItems / 2,
+      ),
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Simulating title shimmer
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 20.0,
+              width: 150.0,
+              color: Colors.grey[300],
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          // Simulating subtitle shimmer
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 14.0,
+              width: double.infinity,
+              color: Colors.grey[300],
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          // Simulating row shimmer
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  height: 14.0,
+                  width: 100.0,
+                  color: Colors.grey[300],
+                ),
+              ),
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  height: 30.0,
+                  width: 80.0,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

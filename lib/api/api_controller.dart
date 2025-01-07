@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:talent_lens_hub/features/authentication/models/CreateUserResponse.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/CheckCourseEnrollmentDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/LessonVideosDataModel.dart';
@@ -13,6 +14,7 @@ import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataM
 import '../features/ToolsContent/datamodel/studyToolsDataModel.dart';
 import '../features/authentication/models/login_response.dart';
 import '../features/courses/DataModel/CourseContentDataModel.dart';
+import '../features/courses/DataModel/CourseEnrollDataModel.dart';
 import '../features/courses/DataModel/VideoQuestionResponseDataModel.dart';
 import '../features/subscriptions/datamodels/subscriptionPlansDataModel.dart';
 
@@ -338,6 +340,52 @@ class ApiController {
           .toList();
     } else {
       throw Exception('Failed to load courses');
+    }
+  }
+
+  Future<CheckEnrollmentDataModel?> checkIfCourseEnrolled(
+      int courseId, int userId) async {
+    final url = "$webURL/training/enroll_courses/$courseId/$userId";
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        if (response.body.isNotEmpty) {
+          final Map<String, dynamic> data = json.decode(response.body);
+          return CheckEnrollmentDataModel.fromJson(data);
+        } else {
+          return null; // When the response is `null`
+        }
+      } else {
+        throw Exception("Failed to fetch data: ${response.statusCode}");
+      }
+    } catch (e) {
+      throw Exception("Error occurred: $e");
+    }
+  }
+
+  Future<CourseEnrollmentResponse> enrollInCourse(
+      String userId, String courseId) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$webURL/training/course_enroll"),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: {
+          'user_id': userId,
+          'course_id': courseId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return CourseEnrollmentResponse.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to enroll course');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
     }
   }
 
