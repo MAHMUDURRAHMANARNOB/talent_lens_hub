@@ -7,6 +7,7 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../providers/auth_provider.dart';
+import '../TermsAndConditionsDialog.dart';
 import '../verify_email.dart';
 
 class TSignupForm extends StatefulWidget {
@@ -142,25 +143,30 @@ class _TSignupFormState extends State<TSignupForm> {
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
               Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                          text: "I accept the ",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      TextSpan(
-                        text: "Terms and Conditions",
-                        style: Theme.of(context).textTheme.bodyMedium!.apply(
-                              color: widget.dark
-                                  ? TColors.white
-                                  : TColors.primaryColor,
-                              decoration: TextDecoration.underline,
-                              decorationColor: widget.dark
-                                  ? TColors.white
-                                  : TColors.primaryColor,
-                            ),
-                      ),
-                    ],
+                child: GestureDetector(
+                  onTap: () {
+                    _showTermsAndConditionsDialog(context);
+                  },
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                            text: "I accept the ",
+                            style: Theme.of(context).textTheme.bodySmall),
+                        TextSpan(
+                          text: "Privacy Policy and Terms and Conditions",
+                          style: Theme.of(context).textTheme.bodyMedium!.apply(
+                                color: widget.dark
+                                    ? TColors.white
+                                    : TColors.primaryColor,
+                                decoration: TextDecoration.underline,
+                                decorationColor: widget.dark
+                                    ? TColors.white
+                                    : TColors.primaryColor,
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -234,6 +240,15 @@ class _TSignupFormState extends State<TSignupForm> {
                 ),
         ],
       ),
+    );
+  }
+
+  void _showTermsAndConditionsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TermsAndConditionsDialog(); // Call TermsAndConditionsDialog to display the dialog
+      },
     );
   }
 }

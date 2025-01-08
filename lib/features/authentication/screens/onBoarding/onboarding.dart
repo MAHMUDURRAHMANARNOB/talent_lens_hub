@@ -132,10 +132,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     onPageChanged: controller.updatePageIndicator,
                     children: const [
                       OnBoardingPage(
-                        image: TImages.onBoardingImage1,
-                        title: TTexts.onBoardingTitle1,
-                        subTitle: TTexts.onBoardingSubTitle1,
-                        description: TTexts.onBoardingDescription1,
+                        image: TImages.onBoardingImage3,
+                        title: TTexts.onBoardingTitle3,
+                        subTitle: TTexts.onBoardingSubTitle3,
+                        description: TTexts.onBoardingDescription3,
                       ),
                       OnBoardingPage(
                         image: TImages.onBoardingImage2,
@@ -144,10 +144,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         description: TTexts.onBoardingDescription2,
                       ),
                       OnBoardingPage(
-                        image: TImages.onBoardingImage3,
-                        title: TTexts.onBoardingTitle3,
-                        subTitle: TTexts.onBoardingSubTitle3,
-                        description: TTexts.onBoardingDescription3,
+                        image: TImages.onBoardingImage1,
+                        title: TTexts.onBoardingTitle1,
+                        subTitle: TTexts.onBoardingSubTitle1,
+                        description: TTexts.onBoardingDescription1,
                       ),
                     ],
                   ),

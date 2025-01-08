@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
-        android:name="${applicationName}"
+        android:name="TalentLensHub"
         android:icon="@mipmap/launcher_icon"
         android:label="talent_lens_hub">
         <activity

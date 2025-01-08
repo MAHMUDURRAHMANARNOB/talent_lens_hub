@@ -115,12 +115,18 @@ class _CoursesScreenState extends State<CoursesScreen> {
               ),
             ),
             // In Progress Items Row
-            _enrolledCourseList(),
+            Padding(
+              padding: const EdgeInsets.only(left: TSizes.defaultSpace / 3),
+              child: _enrolledCourseList(),
+            ),
 
             SizedBox(height: TSizes.spaceBtwSections / 2),
 
             // Courses Category Chip Row
-            _courseCategoryList(),
+            Padding(
+              padding: const EdgeInsets.only(left: TSizes.defaultSpace / 3),
+              child: _courseCategoryList(),
+            ),
 
             // Category Wise Name
             Padding(
@@ -135,7 +141,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   : TSectionHeading(
                       title: selectedCategory ?? "All Courses",
                       showActionButton: true,
-                      buttonTitle: "View All",
+                      buttonTitle: "",
                       textColor: TColors.primaryColor,
                     ),
             ),
@@ -418,7 +424,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: SpinKitWave(
+              child: SpinKitDualRing(
             color: TColors.primaryColor,
             size: 20,
           ));
@@ -433,7 +439,9 @@ class _CoursesScreenState extends State<CoursesScreen> {
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: 5,
+              itemCount: enrolledCoursesProvider.enrolledCourses.length < 5
+                  ? enrolledCoursesProvider.enrolledCourses.length
+                  : 5,
               itemBuilder: (context, index) {
                 final EnrolledCoursesDataModel course =
                     enrolledCoursesProvider.enrolledCourses[index];

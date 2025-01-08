@@ -14,7 +14,7 @@ class CourseEnrollmentProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Future<void> enrollInCourse(String userId, String courseId) async {
+  Future<void> fetchEnrollCourseResponse(String userId, String courseId) async {
     _isLoading = true;
     notifyListeners();
 

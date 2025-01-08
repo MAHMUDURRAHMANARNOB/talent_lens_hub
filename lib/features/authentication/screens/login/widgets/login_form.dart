@@ -110,13 +110,16 @@ class _TLoginFormState extends State<TLoginForm> {
                 ),
 
                 ///ForgetPass
-                TextButton(
-                  onPressed: () {
-                    Get.to(const ForgetPasswordScreen());
-                  },
-                  child: const Text(
-                    TTexts.forgetPassword,
-                    style: TextStyle(color: TColors.secondaryColor),
+                Visibility(
+                  visible: false,
+                  child: TextButton(
+                    onPressed: () {
+                      Get.to(const ForgetPasswordScreen());
+                    },
+                    child: const Text(
+                      TTexts.forgetPassword,
+                      style: TextStyle(color: TColors.secondaryColor),
+                    ),
                   ),
                 )
               ],

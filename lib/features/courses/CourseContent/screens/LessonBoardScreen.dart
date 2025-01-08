@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:markdown_widget/config/configs.dart';
 import 'package:markdown_widget/widget/markdown.dart';
+import 'package:talent_lens_hub/features/courses/CourseContent/screens/LessonInteractionScreen.dart';
 import 'package:talent_lens_hub/features/courses/Provider/LessonContentProvider.dart';
 
 import '../../../../utils/constants/colors.dart';
@@ -32,7 +33,6 @@ class _LessonBoardScreenState extends State<LessonBoardScreen>
   void initState() {
     // TODO: implement initState
     _tabController = TabController(length: 2, vsync: this);
-
     super.initState();
   }
 
@@ -139,16 +139,35 @@ class _LessonBoardScreenState extends State<LessonBoardScreen>
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(10.0),
-      child: /*MarkdownWidget(
-        data:
-            lessonContentProvider.lessonContentDataModel!.textAns.toString() ??
-                "",
-        config: config,
-      ),*/
-          SingleChildScrollView(
-        child: Html(
-          data:
-              lessonContentProvider.lessonContentDataModel!.textAns.toString(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Html(
+              data: lessonContentProvider.lessonContentDataModel!.textAns
+                  .toString(),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LessonInteractionScreen(
+                      lessonId: lessonContentProvider
+                          .lessonContentDataModel!.lessonId
+                          .toString(),
+                      lessonContent: lessonContentProvider
+                          .lessonContentDataModel!.textAns!,
+                    ),
+                  ),
+                );
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Center(child: Text("Ask Question to this lesson")),
+              ),
+            ),
+            // askQuestionButton(),
+          ],
         ),
       ),
 

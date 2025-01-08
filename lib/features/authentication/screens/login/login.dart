@@ -98,11 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     TLoginForm(onLoginSuccess: _saveCredentials),
 
                     ///divider
-                    TFormDivider(dark: dark, dividerText: TTexts.orSignInWith),
-                    const SizedBox(height: TSizes.spaceBtwSections / 2),
+                    Visibility(
+                      visible: false,
+                      child: Column(
+                        children: [
+                          TFormDivider(
+                              dark: dark, dividerText: TTexts.orSignInWith),
+                          const SizedBox(height: TSizes.spaceBtwSections / 2),
 
-                    /// Footer
-                    const TSocialButtons()
+                          /// Footer
+                          const TSocialButtons(),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

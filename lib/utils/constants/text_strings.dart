@@ -12,7 +12,7 @@ class TTexts {
   static const String onBoardingSubTitle2 =
       "Ace Every Interview with Tailored Questions!";
   static const String onBoardingSubTitle3 =
-      " Interactive Learning Powered by Shonod-AI!";
+      "Interactive Learning Powered by Shonod-AI!";
 
   static const String onBoardingDescription1 =
       "Get personalized guidance on career counseling, relationships, mental health, and math problem solutions to set you on the right path.";

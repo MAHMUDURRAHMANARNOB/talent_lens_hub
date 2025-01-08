@@ -4,6 +4,7 @@ import 'package:shurjopay/utilities/functions.dart';
 import 'package:talent_lens_hub/features/courses/Provider/CheckCourseEnrollmentProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/EnrolledCoursesProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/LessonContentProvider.dart';
+import 'package:talent_lens_hub/features/courses/Provider/LessonQuestionAnswerProvider.dart';
 import 'package:talent_lens_hub/features/courses/Provider/LessonVideosProvider.dart';
 import 'package:talent_lens_hub/utils/theme/theme.dart';
 
@@ -12,6 +13,7 @@ import 'features/ToolsContent/providers/toolsResponseProvider.dart';
 import 'features/authentication/providers/UserStatesProvider.dart';
 import 'features/authentication/providers/auth_provider.dart';
 import 'features/courses/Provider/CourseContentProvider.dart';
+import 'features/courses/Provider/CourseEnrollmentProvider.dart';
 import 'features/courses/Provider/CourseListProvider.dart';
 import 'features/courses/Provider/TrainingCategoryProvider.dart';
 import 'features/courses/Provider/VideoQuestionResponseProvider.dart';
@@ -43,6 +45,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => EnrolledCoursesProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (_) => CheckCourseEnrollmentProvider()),
+        ChangeNotifierProvider(create: (_) => CourseEnrollmentProvider()),
+        ChangeNotifierProvider(create: (_) => LessonQuestionAnswerProvider()),
 
         // ChangeNotifierProvider(create: (_) => LessonProvider()),
 

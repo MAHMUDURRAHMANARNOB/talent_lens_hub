@@ -7,7 +7,9 @@ import '../../../../common/widgets/custom_shapes/containers/circular_container.d
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
+import '../../../authentication/providers/auth_provider.dart';
 import '../../Provider/CourseContentProvider.dart';
+import '../../Provider/CourseEnrollmentProvider.dart';
 import 'LessonBoardScreen.dart';
 
 class LessonListScreen extends StatefulWidget {
@@ -28,9 +30,12 @@ class LessonListScreen extends StatefulWidget {
 class _LessonListScreenState extends State<LessonListScreen> {
   final CourseContentProvider courseContentProvider = CourseContentProvider();
 
+  late int userId;
+
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunction.isDarkMode(context);
+    userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
     late bool isEnrolled = widget.isEnrolled;
 
     return Scaffold(
@@ -90,6 +95,35 @@ class _LessonListScreenState extends State<LessonListScreen> {
                             // textAlign: TextAlign.center,
                           ),
                         ),
+                        /*Visibility(
+                          visible: !isEnrolled,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: TColors.secondaryColor,
+                              elevation: 6,
+                              side: BorderSide(color: TColors.secondaryColor),
+                            ),
+                            onPressed: () async {
+                              //Show a loading indicator while making the api call
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) =>
+                                    Center(child: CircularProgressIndicator()),
+                              );
+                            },
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                "Enroll now",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),*/
                         Visibility(
                           visible: !isEnrolled,
                           child: ElevatedButton(
@@ -98,14 +132,97 @@ class _LessonListScreenState extends State<LessonListScreen> {
                               elevation: 6,
                               side: BorderSide(color: TColors.secondaryColor),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              // Show a loading indicator while making the API call
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) => Center(
+                                    child: CircularProgressIndicator(
+                                  color: TColors.primaryColor,
+                                )),
+                              );
+
+                              try {
+                                // Call the provider to enroll in the course
+                                await Provider.of<CourseEnrollmentProvider>(
+                                        context,
+                                        listen: false)
+                                    .fetchEnrollCourseResponse(
+                                        userId.toString(),
+                                        widget.courseCategoryId.toString());
+
+                                final response =
+                                    Provider.of<CourseEnrollmentProvider>(
+                                  context,
+                                  listen: false,
+                                ).response;
+
+                                Navigator.pop(
+                                    context); // Dismiss the loading indicator
+
+                                if (response != null &&
+                                    response.statusCode == 200) {
+                                  setState(() {
+                                    isEnrolled =
+                                        true; // Update the button state
+                                  });
+                                  // Show success message
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(response.message!)),
+                                  );
+                                } else {
+                                  // Show error message in a dialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      title: Text('Error'),
+                                      content: Text(response?.message ??
+                                          'Something went wrong.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text(
+                                            'OK',
+                                            style: TextStyle(
+                                                color: TColors.primaryColor),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                Navigator.pop(
+                                    context); // Dismiss the loading indicator
+
+                                // Show error message in a dialog
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Error'),
+                                    content: Text(
+                                        'An unexpected error occurred: $e'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
                             child: SizedBox(
                               width: double.infinity,
                               child: Text(
                                 "Enroll now",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -345,7 +462,8 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(12.0),
-                                        color: lesson.isFree == 'Y' ||
+                                        color: isEnrolled ||
+                                                lesson.isFree == 'Y' ||
                                                 lesson.isFree == "M"
                                             ? TColors.success.withOpacity(0.1)
                                             : TColors.secondaryColor
@@ -372,7 +490,8 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                   child: Icon(
                                                     Iconsax.book,
                                                     size: 20.0,
-                                                    color: lesson.isFree ==
+                                                    color: isEnrolled ||
+                                                            lesson.isFree ==
                                                                 'Y' ||
                                                             lesson.isFree == "M"
                                                         ? TColors.success
@@ -408,7 +527,8 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                                 vertical: 5.0),
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: lesson.isFree ==
+                                                          color: isEnrolled ||
+                                                                  lesson.isFree ==
                                                                       'Y' ||
                                                                   lesson.isFree ==
                                                                       "M"
@@ -422,7 +542,8 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          lesson.isFree ==
+                                                          isEnrolled ||
+                                                                  lesson.isFree ==
                                                                       'Y' ||
                                                                   lesson.isFree ==
                                                                       "M"
@@ -439,9 +560,12 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                                 SizedBox(width: 10.0),
                                                 Icon(
                                                   Icons.arrow_forward_ios,
-                                                  color: lesson.isFree == 'Y'
+                                                  color: isEnrolled ||
+                                                          lesson.isFree ==
+                                                              'Y' ||
+                                                          lesson.isFree == "M"
                                                       ? TColors.success
-                                                      : TColors.info,
+                                                      : TColors.secondaryColor,
                                                 ),
                                               ],
                                             ),

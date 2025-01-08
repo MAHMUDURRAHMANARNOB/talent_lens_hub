@@ -8,6 +8,7 @@ import 'package:talent_lens_hub/features/authentication/models/CreateUserRespons
 import 'package:talent_lens_hub/features/courses/DataModel/CheckCourseEnrollmentDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/CourseListDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/EnrolledCoursesDataModel.dart';
+import 'package:talent_lens_hub/features/courses/DataModel/LessonQuestionAnswerDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/LessonVideosDataModel.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
 
@@ -367,6 +368,7 @@ class ApiController {
 
   Future<CourseEnrollmentResponse> enrollInCourse(
       String userId, String courseId) async {
+    print("Hi");
     try {
       final response = await http.post(
         Uri.parse("$webURL/training/course_enroll"),
@@ -374,12 +376,13 @@ class ApiController {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: {
-          'user_id': userId,
-          'course_id': courseId,
+          'userId': userId,
+          'courseId': courseId,
         },
       );
 
       if (response.statusCode == 200) {
+        print(jsonDecode(response.body));
         return CourseEnrollmentResponse.fromJson(jsonDecode(response.body));
       } else {
         throw Exception('Failed to enroll course');
@@ -458,7 +461,7 @@ class ApiController {
     }
   }
 
-  // fetch lesson answer
+  // fetch video lesson answer
   Future<Map<String, dynamic>> fetchVideoAnswer({
     required String question,
     required int videoID,
@@ -501,6 +504,46 @@ class ApiController {
         print("Error Status Code: ${response.statusCode}");
 
         // print("Request Body: $body");
+        throw Exception('Failed to load data: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error occurred: $e');
+    }
+  }
+
+  // fetch video lesson answer
+  Future<Map<String, dynamic>> fetchLessonQuestionAnswer({
+    required String question,
+    required String lessonAnswerId,
+    required int userId,
+  }) async {
+    try {
+      final uri = Uri.parse("$baseUrl/answerquestion/");
+
+      final response = await http.post(
+        uri,
+        body: {
+          'question': question.toString(),
+          'lessonansID': lessonAnswerId.toString(),
+          'userid': userId.toString(),
+        },
+      );
+      // print("Response  $response");
+
+      if (response.statusCode == 200) {
+        final responseBody = utf8.decode(response.bodyBytes);
+        // print("Response Body: $responseBody");
+
+        /*final jsonResponse = jsonDecode(responseBody);
+        return jsonResponse;*/
+        final jsonResponse = jsonDecode(responseBody);
+        if (jsonResponse is Map<String, dynamic>) {
+          return jsonResponse;
+        } else {
+          throw Exception('Invalid JSON structure received.');
+        }
+      } else {
+        print("Error Status Code: ${response.statusCode}");
         throw Exception('Failed to load data: ${response.statusCode}');
       }
     } catch (e) {

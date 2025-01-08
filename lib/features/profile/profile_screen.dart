@@ -127,6 +127,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Consumer<UserStatesProvider>(
                         builder: (context, tokenProvider, child) {
+                      final comments =
+                          tokenProvider.userStats!.availableComments ?? 0;
+                      final tickets =
+                          tokenProvider.userStats!.availableTickets ?? 0;
+                      final courses =
+                          tokenProvider.userStats!.availableCourses ?? 0;
+                      final enrolledCourses =
+                          tokenProvider.userStats!.enrolledCourses ?? 0;
                       if (tokenProvider.userStats == null) {
                         // Show loader while data is being fetched
                         return Center(
@@ -136,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         );
                       }
-                      if (tokenProvider.userStats!.availableTickets == null) {
+                      /*if (tokenProvider.userStats!.availableTickets == null) {
                         // Show message if no data is found
                         return Center(
                           child: Text(
@@ -148,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         );
-                      }
+                      }*/
                       // Display the data if available
                       return Container(
                         margin: EdgeInsets.all(10.0),
@@ -184,8 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                                 Text(
-                                  tokenProvider.userStats!.availableTickets
-                                      .toString(),
+                                  tickets.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: TColors.primaryColor,
@@ -220,8 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                                 Text(
-                                  tokenProvider.userStats!.availableComments
-                                      .toString(),
+                                  comments.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: TColors.primaryColor,
@@ -256,8 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                                 Text(
-                                  tokenProvider.userStats!.availableCourses
-                                      .toString(),
+                                  courses.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: TColors.primaryColor,
@@ -292,8 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                                 Text(
-                                  tokenProvider.userStats!.enrolledCourses
-                                      .toString(),
+                                  enrolledCourses.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: TColors.primaryColor,
