@@ -1,7 +1,8 @@
 name: talent_lens_hub
 description: "Unlocking Potential, Illuminating Futures"
 publish_to: 'none'
-version: 1.0.0+1
+#version: 1.0.0+1
+version: 1.0.1+2 #icon issue fixed + name issue fixed
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -66,6 +67,8 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/icons/light_icon.png"
+  adaptive_icon_foreground: "assets/icons/logo_foreground.png"
+  adaptive_icon_background: "#ffffff"
   min_sdk_android: 21 # android min sdk min:16, default 21
 
   windows:
