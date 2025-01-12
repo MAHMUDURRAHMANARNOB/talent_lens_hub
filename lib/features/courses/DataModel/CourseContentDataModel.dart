@@ -47,7 +47,7 @@ class CourseDataModel {
   final String prerequisites;
   final List<String> targetAudience;
   final bool isContentDone;
-  final bool isCertificateAvailable;
+  final String isCertificateAvailable;
   final bool isBangla;
   final int totalStudents;
   final String difficultyLevel;
@@ -118,7 +118,7 @@ class CourseDataModel {
       prerequisites: json['prerequisites'],
       targetAudience: parseStringList(json['targetAudience']),
       isContentDone: json['iscontentdone'] == "Y",
-      isCertificateAvailable: json['isCertificateAvailable'] == "Y",
+      isCertificateAvailable: json['isCertificateAvailable'],
       isBangla: json['isBangla'] == "Y",
       totalStudents: json['TotalStudents'],
       difficultyLevel: json['difficultilevel'],
@@ -147,7 +147,7 @@ class CourseDataModel {
       'prerequisites': prerequisites,
       'targetAudience': targetAudience,
       'iscontentdone': isContentDone ? "Y" : "N",
-      'isCertificateAvailable': isCertificateAvailable ? "Y" : "N",
+      'isCertificateAvailable': isCertificateAvailable,
       'isBangla': isBangla ? "Y" : "N",
       'TotalStudents': totalStudents,
       'difficultilevel': difficultyLevel,

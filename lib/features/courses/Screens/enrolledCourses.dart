@@ -78,7 +78,7 @@ class _EnrolledCoursesState extends State<EnrolledCourses> {
                     MaterialPageRoute(
                       builder: (context) => LessonListScreen(
                         courseTitle: course.courseName,
-                        courseCategoryId: course.id,
+                        courseId: course.id,
                         isEnrolled: true,
                       ),
                     ),

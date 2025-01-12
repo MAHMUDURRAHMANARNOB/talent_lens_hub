@@ -631,6 +631,7 @@ class ApiController {
         },
       );
       print("Response  $response");
+      print("Response  ${response.statusCode}");
       if (response.statusCode == 200) {
         // If the server returns a 200 OK response, parse the JSON
         print("Response in getToolsResponse " + response.body);
@@ -790,7 +791,7 @@ class ApiController {
     }
   }
 
-  // Github Question Response
+  // Cover Letter Response
   Future<Map<String, dynamic>> getCoverLetterResponse(
     int userId,
     String jobTitle,
@@ -819,6 +820,36 @@ class ApiController {
       }
     } catch (e) {
       throw Exception("Failed getCoverLetterResponse $e");
+    }
+  }
+
+//   Start Course Exam
+  Future<Map<String, dynamic>> startCourseExam({
+    required String userId,
+    required String courseId,
+    String? examPaperId,
+    String? questionId,
+    String? ansId,
+  }) async {
+    final url = Uri.parse("$baseUrl/StartcourseExam");
+    // Creating a form-data body
+    final request = http.MultipartRequest("POST", url)
+      ..fields["userid"] = userId
+      ..fields["courseId"] = courseId;
+
+    if (examPaperId != null) request.fields["examPaperId"] = examPaperId;
+    if (questionId != null) request.fields["questionID"] = questionId;
+    if (ansId != null) request.fields["ansID"] = ansId;
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final utf8Body = utf8.decode(response.bodyBytes);
+      // print(json.decode(utf8Body));
+      return json.decode(utf8Body);
+    } else {
+      throw Exception("Failed to fetch data: ${response.body}");
     }
   }
 }

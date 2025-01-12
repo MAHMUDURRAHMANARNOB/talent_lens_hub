@@ -2,26 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:talent_lens_hub/features/courses/CourseContent/screens/CertificatePreviewScreen.dart';
+import 'package:talent_lens_hub/features/courses/CourseExam/Screens/CourseExamInstructionsScreen.dart';
 
 import '../../../../common/widgets/custom_shapes/containers/circular_container.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
 import '../../../authentication/providers/auth_provider.dart';
+import '../../DataModel/CheckCourseEnrollmentDataModel.dart';
+import '../../Provider/CheckCourseEnrollmentProvider.dart';
 import '../../Provider/CourseContentProvider.dart';
 import '../../Provider/CourseEnrollmentProvider.dart';
 import 'LessonBoardScreen.dart';
 
 class LessonListScreen extends StatefulWidget {
   final String courseTitle;
-  final int courseCategoryId;
+  final int courseId;
   final bool isEnrolled;
 
-  const LessonListScreen(
-      {super.key,
-      required this.courseTitle,
-      required this.courseCategoryId,
-      required this.isEnrolled});
+  const LessonListScreen({
+    super.key,
+    required this.courseTitle,
+    required this.courseId,
+    required this.isEnrolled,
+  });
 
   @override
   State<LessonListScreen> createState() => _LessonListScreenState();
@@ -29,6 +35,8 @@ class LessonListScreen extends StatefulWidget {
 
 class _LessonListScreenState extends State<LessonListScreen> {
   final CourseContentProvider courseContentProvider = CourseContentProvider();
+  final CheckCourseEnrollmentProvider checkCourseEnrollmentProvider =
+      CheckCourseEnrollmentProvider();
 
   late int userId;
 
@@ -37,15 +45,16 @@ class _LessonListScreenState extends State<LessonListScreen> {
     final dark = THelperFunction.isDarkMode(context);
     userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
     late bool isEnrolled = widget.isEnrolled;
-
+    late bool isExamTaken = false;
     return Scaffold(
-      appBar: AppBar(title: Text('Course Content')),
+      appBar: AppBar(
+        title: Text('Course Content'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             FutureBuilder<void>(
-              future: courseContentProvider
-                  .fetchCourseContent(widget.courseCategoryId),
+              future: courseContentProvider.fetchCourseContent(widget.courseId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -95,35 +104,6 @@ class _LessonListScreenState extends State<LessonListScreen> {
                             // textAlign: TextAlign.center,
                           ),
                         ),
-                        /*Visibility(
-                          visible: !isEnrolled,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: TColors.secondaryColor,
-                              elevation: 6,
-                              side: BorderSide(color: TColors.secondaryColor),
-                            ),
-                            onPressed: () async {
-                              //Show a loading indicator while making the api call
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) =>
-                                    Center(child: CircularProgressIndicator()),
-                              );
-                            },
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                "Enroll now",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),*/
                         Visibility(
                           visible: !isEnrolled,
                           child: ElevatedButton(
@@ -150,7 +130,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
                                         listen: false)
                                     .fetchEnrollCourseResponse(
                                         userId.toString(),
-                                        widget.courseCategoryId.toString());
+                                        widget.courseId.toString());
 
                                 final response =
                                     Provider.of<CourseEnrollmentProvider>(
@@ -298,6 +278,83 @@ class _LessonListScreenState extends State<LessonListScreen> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 10),
+                        FutureBuilder<CheckEnrollmentDataModel?>(
+                          future: checkCourseEnrollmentProvider
+                              .fetchEnrollCourse(widget.courseId, userId),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return SpinKitDualRing(
+                                  color: TColors.secondaryColor);
+                            }
+                            final isExamTaken = checkCourseEnrollmentProvider
+                                .courseData?.isExamTaken;
+                            isEnrolled =
+                                checkCourseEnrollmentProvider.courseData !=
+                                    null;
+                            // print(
+                            //     "isExamTaken ${widget.courseId} - $isExamTaken");
+                            return isExamTaken == "Y"
+                                ? ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: TColors.success,
+                                      elevation: 6,
+                                      side: BorderSide(color: TColors.success),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CertificatePreview(
+                                              pdfPath:
+                                                  checkCourseEnrollmentProvider
+                                                      .courseData!
+                                                      .certificateFile!),
+                                        ),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: Text(
+                                        "Download Certificate",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                : Visibility(
+                                    visible: isEnrolled,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: TColors.secondaryColor,
+                                        elevation: 6,
+                                        side: BorderSide(
+                                            color: TColors.secondaryColor),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CourseExamInstructionScreen(
+                                              courseName: widget.courseTitle,
+                                              courseId: widget.courseId,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          "Start Exam",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                          },
+                        ),
+                        SizedBox(height: 10),
                         Text(
                           "Chapters:",
                           style: TextStyle(

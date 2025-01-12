@@ -148,84 +148,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
             // Render course list
             ...courseListProvider.courses.map((course) {
-              /*return Container(
-                // color: Colors.white,
-                decoration: BoxDecoration(
-                  color: course.id.isEven
-                      ? TColors.accent.withOpacity(0.1)
-                      : TColors.secondaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: TSizes.defaultSpace / 2,
-                  vertical: TSizes.spaceBtwItems / 2,
-                ),
-                child: ListTile(
-                  title: Text(
-                    course.courseName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Column(
-                    children: [
-                      Text(
-                        course.courseDescription,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Total Enrolled: ",
-                                style: TextStyle(),
-                              ),
-                              Text(
-                                // RandomNumberGenerator.generateRandomNumber(),
-                                course.totalStudents.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: course.id.isEven
-                                      ? TColors.info
-                                      : TColors.secondaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          EnrollButton(
-                            courseId: course.id,
-                            userId: userId,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  */ /*leading: course.imgPath != null
-                      ? Image.network(course.imgPath!)
-                      : const Icon(Iconsax.book, color: TColors.primaryColor),*/ /*
-                  */ /*trailing: const Icon(Iconsax.arrow_circle_right,
-                      size: 24, color: TColors.primaryColor),*/ /*
-                  onTap: () {
-                    // Handle course item click
-                    if (kDebugMode) {
-                      print(course.id);
-                    }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LessonListScreen(
-                          courseTitle: course.courseName,
-                          courseCategoryId: course.id,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );*/
               return FutureBuilder<CheckEnrollmentDataModel?>(
                 future: checkCourseEnrollmentProvider.fetchEnrollCourse(
                     course.id, userId),
@@ -235,7 +157,11 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   }
 
                   final isEnrolled = snapshot.data != null;
-
+                  final courseId =
+                      checkCourseEnrollmentProvider.courseData?.courseId;
+                  final isExamTaken =
+                      checkCourseEnrollmentProvider.courseData?.isExamTaken;
+                  // print("isExamTaken $courseId - $isExamTaken");
                   return Container(
                     decoration: BoxDecoration(
                       color: isEnrolled
@@ -309,7 +235,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                             MaterialPageRoute(
                               builder: (context) => LessonListScreen(
                                 courseTitle: course.courseName,
-                                courseCategoryId: course.id,
+                                courseId: course.id,
                                 isEnrolled: isEnrolled,
                               ),
                             ),
@@ -340,7 +266,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                             MaterialPageRoute(
                               builder: (context) => LessonListScreen(
                                 courseTitle: course.courseName,
-                                courseCategoryId: course.id,
+                                courseId: course.id,
                                 isEnrolled: isEnrolled,
                               ),
                             ),
@@ -452,7 +378,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                       MaterialPageRoute(
                         builder: (context) => LessonListScreen(
                           courseTitle: course.courseName,
-                          courseCategoryId: course.id,
+                          courseId: course.id,
                           isEnrolled: true,
                         ),
                       ),

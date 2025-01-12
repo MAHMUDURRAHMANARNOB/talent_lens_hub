@@ -2,7 +2,8 @@ name: talent_lens_hub
 description: "Unlocking Potential, Illuminating Futures"
 publish_to: 'none'
 #version: 1.0.0+1
-version: 1.0.1+2 #icon issue fixed + name issue fixed
+#version: 1.0.1+2 #icon issue fixed + name issue fixed
+version: 1.0.2+3 #icon issue fixed + name issue fixed
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -39,6 +40,7 @@ dependencies:
   percent_indicator: ^4.0.1
   fluttertoast: ^8.2.3
   flutter_html:
+  flutter_pdfview: ^1.4.0
 
 
   # Icons
