@@ -94,9 +94,9 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
         title: Text(widget.toolsName!),
         centerTitle: true,
       ),
-      /*floatingActionButton: Visibility(
-        visible: !_isNewQuestion && !_isReply,
-        child: _lessonComponents.isEmpty
+      floatingActionButton: Visibility(
+        visible: !_isNewQuestion,
+        child: !_lessonComponents.isEmpty
             ? FloatingActionButton.extended(
                 onPressed: () {
                   setState(() {
@@ -118,20 +118,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                     ? TColors.primaryColor.withOpacity(0.2)
                     : TColors.primaryBackground,
               )
-            : FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    _isNewQuestion = true;
-                    _isReply = false;
-                  });
-                },
-                backgroundColor: TColors.primaryBackground,
-                child: Icon(
-                  Icons.question_answer_outlined,
-                  color: TColors.primaryColor,
-                ),
-              ),
-      ),*/
+            : Container(),
+      ),
       body: SafeArea(child: MainContent()),
     );
   }
@@ -474,231 +462,300 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
   }
 
   Widget newQuestionBarWidget() {
-    return Column(
-      children: [
-        Visibility(
-          // visible: _isNewQuestion,
-          child: Container(
-            // color: TColors.primaryCardColor,
-            padding: EdgeInsets.fromLTRB(8.0, 2.0, 5.0, 2.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      margin: EdgeInsets.all(8),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // job title
+          Visibility(
+            visible: widget.toolsName == "Interview Questions" ||
+                widget.toolsName == "Cover Letter",
+            child: Column(
               children: [
-                Visibility(
-                  // visible: _isNewQuestion,
-                  child: const Text("Talk about your confusion "),
-                ),
-                IconButton(
-                  style: ElevatedButton.styleFrom(
-                      // backgroundColor: TColors.backgroundColorDark,
+                TextFormField(
+                  maxLines: 1,
+                  controller: jobTitleTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: TColors.primaryColor,
                       ),
-                  onPressed: () {
-                    // Add your logic to send the message
-                    setState(() {
-                      _isNewQuestion = false;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    // color: TColors.primaryColor,
-                    size: 18,
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    labelText: "Job Title",
+                    hintText: "i.e.: Software Engineer",
+                    border: OutlineInputBorder(),
                   ),
+                  onChanged: (value) {
+                    _jobTitle = value;
+                  },
                 ),
+                SizedBox(height: 10),
               ],
             ),
           ),
-        ),
-        /*BOTTOM CONTROL 1ST ROW*/
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(8.0, 5.0, 5.0, 2.0),
-          decoration: const BoxDecoration(
-            // color: TColors.backgroundColorDark,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8),
-              topRight: Radius.circular(8),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              /*SELECTED CLASS*/
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5.0),
-                child: /*Consumer<ToolsDataProvider>(
-                  builder: (context, toolsDataProvider, child) {
-                    return */ /*buildDropdownMenuClass()*/ /* buildChipClass(
-                        toolsDataProvider);
-                  },
-                ),*/
-                    Text("Selected Class"),
-              ),
-              /*SELECTED SUBJECT*/
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5.0),
-                child: Visibility(
-                  // visible: subjectSelectionVisibility,
-                  child: /*Consumer<ToolsDataProvider>(
-                    builder: (context, toolsDataProvider, child) {
-                      return */ /*buildDropdownMenuSubjects()*/ /* buildChipSubjects(
-                          toolsDataProvider);
-                    },
-                  ),*/
-                      Text("Selected Subject"),
-                ),
-              ),
-            ],
-          ),
-        ),
-        /*BOTTOM CONTROL 2ND ROW*/
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(8.0, 2.0, 5.0, 5.0),
-          decoration: const BoxDecoration(
-            // color: TColors.backgroundColorDark,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(8),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              /*Picked Image*/
-              if (_selectedImage != null)
-                Visibility(
-                  visible: _isImageSelected,
-                  child: Stack(
-                    children: [
-                      ClipPath(
-                        child: Container(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: Image.file(
-                              _selectedImage!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          height: 80,
-                          width: 80,
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: _removeImage,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  Colors.red, // Background color of the button
-                            ),
-                            padding: const EdgeInsets.all(5.0),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white, // Color of the icon
-                              size: 16.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
-              /*TYPE MESSAGE*/
-              TextField(
-                controller: questionTextFieldController,
-                maxLines: 3,
-                minLines: 1,
-                cursorColor: TColors.primaryColor,
-                decoration: const InputDecoration(
-                  hintText: 'Speak, Add Image or Type..',
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                ),
-                onChanged: (value) {
-                  _question = value;
-                },
-              ),
-              /*BUTTON CONTROLS IMAGE, KEYBOARD, SEND*/
-
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment
-                      .spaceBetween, // Align items with space between them
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        _showImageSourceDialog();
-                        setState(() {
-                          isImagePicked = true;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: dark
-                            ? TColors.primaryColor.withOpacity(0.2)
-                            : TColors.primaryBackground,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(20), // Rounded corners
-                        ),
-                      ),
-                      iconSize: 24,
-                      icon: const Icon(
-                        Iconsax.gallery_add,
+          // job description
+          Visibility(
+            visible: widget.toolsName == "Interview Questions",
+            child: Column(
+              children: [
+                TextFormField(
+                  maxLines: 4,
+                  controller: jobDescriptionTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
                         color: TColors.primaryColor,
                       ),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    AvatarGlow(
-                      animate: _isListening,
-                      curve: Curves.fastOutSlowIn,
-                      glowColor: _isListening
-                          ? TColors.primaryColor
-                          : dark
-                              ? TColors.primaryColor.withOpacity(0.2)
-                              : TColors.primaryBackground,
-                      duration: const Duration(milliseconds: 1000),
-                      repeat: true,
-                      glowRadiusFactor: 0.2,
-                      child: IconButton(
-                        onPressed: _listen,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: dark
-                              ? TColors.primaryColor.withOpacity(0.2)
-                              : TColors.primaryBackground,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(20), // Rounded corners
-                          ),
-                        ),
-                        iconSize: 24,
-                        icon: _isListening
-                            ? Icon(
-                                Iconsax.microphone,
-                                color: TColors.primaryColor,
-                              )
-                            : Icon(
-                                Icons.mic_none,
-                                color: TColors.primaryColor,
-                              ),
-                      ),
-                    ),
-                  ],
+                    labelText: "Job Description (For better result)",
+                    hintText:
+                        "i.e: \"Keeping up with product and technical knowledge\nScheduling and performing demonstrations\nAnswering customer questions\nAttending trade shows and company meetings\"",
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    _jobDescription = value;
+                  },
                 ),
-              ),
-            ],
+                SizedBox(height: 10),
+              ],
+            ),
           ),
-        ),
-        const Text("Chat may produce inaccurate information."),
-      ],
+
+          // personal skills
+          Visibility(
+            visible: widget.toolsName == "Cover Letter",
+            child: Column(
+              children: [
+                TextFormField(
+                  maxLines: 3,
+                  controller: personalSkillsTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: TColors.primaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    labelText: "Personal Skills",
+                    hintText: "i.e.: Python, Problem Solving, dJango",
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    _personalSkills = value;
+                  },
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+          ),
+
+          // question
+          Visibility(
+            visible: widget.toolsName != "Interview Questions" &&
+                widget.toolsName != "Cover Letter",
+            child: Column(
+              children: [
+                TextFormField(
+                  maxLines: 3,
+                  controller: questionTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: TColors.primaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    labelText: "Enter your problem",
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    _question = value;
+                  },
+                ),
+                SizedBox(height: 10.0),
+              ],
+            ),
+          ),
+
+          // career counselor
+          Visibility(
+            visible: widget.toolsName == "Career Counselor",
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: skillsTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    labelText: "Skills (Optional)",
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: TColors.primaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    _skills = value;
+                  },
+                ),
+                SizedBox(height: 10.0),
+                TextFormField(
+                  controller: interestedTopicsTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: TColors.primaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    labelText: "Interested Topic (Optional)",
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    _interestedTopic = value;
+                  },
+                ),
+                SizedBox(height: 10.0),
+                TextFormField(
+                  controller: experienceTextFieldController,
+                  cursorColor: TColors.primaryColor,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: TColors.primaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    labelText: "Experience (Optional)",
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    _experience = value;
+                  },
+                ),
+                SizedBox(height: 10.0),
+              ],
+            ),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(backgroundColor: TColors.primaryColor),
+            onPressed: () {
+              setState(() {
+                if (widget.toolsName == "Career Counselor") {
+                  _lessonComponents.add(
+                    generateCareerCounselorResponse(
+                      context,
+                      userID,
+                      _question,
+                      _skills,
+                      _interestedTopic,
+                      _experience,
+                    ),
+                  );
+
+                  skillsTextFieldController.clear();
+                  interestedTopicsTextFieldController.clear();
+                  experienceTextFieldController.clear();
+                } else if (widget.toolsName == "Math Solution") {
+                  _lessonComponents.add(
+                    generateMathSolutionResponse(
+                      context,
+                      userID,
+                      _question,
+                    ),
+                  );
+                } else if (widget.toolsName == "Life Coach") {
+                  _lessonComponents.add(
+                    generateLifeCoachResponse(
+                      context,
+                      userID,
+                      _question,
+                    ),
+                  );
+                } else if (widget.toolsName == "Mental Health") {
+                  _lessonComponents.add(
+                    generateMentalHealthResponse(
+                      context,
+                      userID,
+                      _question,
+                    ),
+                  );
+                } else if (widget.toolsName == "Relationship Coach") {
+                  _lessonComponents.add(
+                    generateRelationshipCoachResponse(
+                      context,
+                      userID,
+                      _question,
+                    ),
+                  );
+                } else if (widget.toolsName == "Psychology") {
+                  _lessonComponents.add(
+                    generatePsychologyResponse(
+                      context,
+                      userID,
+                      _question,
+                    ),
+                  );
+                } else if (widget.toolsName == "Interview Questions") {
+                  _lessonComponents.add(
+                    generateInterviewQuestionResponse(
+                        context, userID, _jobTitle, _jobDescription, "10"),
+                  );
+                } else if (widget.toolsName == "Cover Letter") {
+                  _lessonComponents.add(
+                    generateCoverLetterResponse(
+                      context,
+                      userID,
+                      _jobTitle,
+                      _personalSkills,
+                    ),
+                  );
+                }
+
+                questionTextFieldController.clear();
+                _selectedImage = null;
+                _isImageSelected = false;
+                _isReply = false;
+                _isNewQuestion = false;
+                _question = '';
+                _jobDescription = '';
+                _jobTitle = '';
+                _skills = '';
+                _interestedTopic = '';
+                _experience = '';
+                _personalSkills = '';
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: const Text(
+                "Advice Me",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const Text(
+            "N.B: We do not store any of you personal informations",
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
@@ -2325,16 +2382,38 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
               toolsResponseProvider.coverLetterResponseDataModel!.errorCode ==
                   200) {
             final response = toolsResponseProvider.coverLetterResponseDataModel;
+            final coverLetterEncoded = response!.coverLetter;
+            final lessonAnswer = utf8.decode(coverLetterEncoded.runes.toList());
             return Container(
-              width: double.infinity,
-              child: MW.MarkdownWidget(
-                data: response!.coverLetter,
-                padding: EdgeInsets.all(10.0),
-                selectable: true,
-                config: MarkdownConfig.defaultConfig,
-                markdownGenerator: MarkdownGenerator(
-                    generators: [latexGenerator],
-                    inlineSyntaxList: [LatexSyntax()]),
+              margin: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                // color: TColors.primaryColor.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /*Top Part*/
+                  Text(
+                    jobTitle,
+                    style: TextStyle(
+                      color: TColors.primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  MW.MarkdownWidget(
+                    data: lessonAnswer,
+                    shrinkWrap: true,
+                    selectable: true,
+                    config: MarkdownConfig.defaultConfig,
+                    markdownGenerator: MarkdownGenerator(
+                        generators: [latexGenerator],
+                        inlineSyntaxList: [LatexSyntax()]),
+                  ),
+                ],
               ),
             );
           } else {

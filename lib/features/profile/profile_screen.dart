@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    Consumer<UserStatesProvider>(
+                    /*Consumer<UserStatesProvider>(
                         builder: (context, tokenProvider, child) {
                       final comments =
                           tokenProvider.userStats!.availableComments ?? 0;
@@ -143,8 +143,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             size: 20,
                           ),
                         );
+                      } else if (tokenProvider.isLoading) {
+                        return Center(
+                          child: SpinKitChasingDots(
+                            color: TColors.primaryColor,
+                            size: 20,
+                          ),
+                        );
                       }
-                      /*if (tokenProvider.userStats!.availableTickets == null) {
+                      */ /*if (tokenProvider.userStats!.availableTickets == null) {
                         // Show message if no data is found
                         return Center(
                           child: Text(
@@ -156,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         );
-                      }*/
+                      }*/ /*
                       // Display the data if available
                       return Container(
                         margin: EdgeInsets.all(10.0),
@@ -308,7 +315,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                       );
-                    }),
+                    }),*/
+                    FutureBuilder<void>(
+                      future: userStatesProvider.getUserStates(userId),
+                      // Replace with your actual method to fetch user stats
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Show loader while data is being fetched
+                          return Center(
+                            child: SpinKitHourGlass(
+                              color: TColors.primaryColor,
+                              size: 20,
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          // Handle errors if the future fails
+                          return Center(
+                            child: Text(
+                              "Error loading data: ${snapshot.error}",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        } else if (userStatesProvider.userStats == null) {
+                          // Show message if no data is found
+                          return Center(
+                            child: Text(
+                              "No data available",
+                              style: TextStyle(
+                                color: TColors.primaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        } else {
+                          // Data is available
+                          final userStats = userStatesProvider.userStats!;
+                          final comments = userStats.availableComments ?? 0;
+                          final tickets = userStats.availableTickets ?? 0;
+                          final courses = userStats.availableCourses ?? 0;
+                          final enrolledCourses =
+                              userStats.enrolledCourses ?? 0;
+
+                          return Container(
+                            margin: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: TColors.primaryColor.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(color: TColors.primaryColor),
+                            ),
+                            child: Column(
+                              children: [
+                                _buildStatsRow(
+                                    Icons.airplane_ticket, "Tickets", tickets),
+                                Divider(color: TColors.primaryColor),
+                                _buildStatsRow(
+                                    Icons.star, "Comments", comments),
+                                Divider(color: TColors.primaryColor),
+                                _buildStatsRow(
+                                    Icons.book, "Courses Token", courses),
+                                Divider(color: TColors.primaryColor),
+                                _buildStatsRow(Icons.school_rounded,
+                                    "Enrolled Courses", enrolledCourses),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
 
                     //   Subscription Details
                     /*Container(
@@ -564,6 +644,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStatsRow(IconData icon, String label, int value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(icon, color: TColors.primaryColor),
+            ),
+            SizedBox(width: TSizes.sm),
+            Text(label),
+          ],
+        ),
+        Text(
+          value.toString(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: TColors.primaryColor,
+            fontSize: 20,
+          ),
+        ),
+      ],
     );
   }
 }
