@@ -18,6 +18,7 @@ import 'features/courses/Provider/CourseEnrollmentProvider.dart';
 import 'features/courses/Provider/CourseListProvider.dart';
 import 'features/courses/Provider/TrainingCategoryProvider.dart';
 import 'features/courses/Provider/VideoQuestionResponseProvider.dart';
+import 'features/courses/RecommandedCoursesForUser/recommendedCoursebyIdProvider.dart';
 import 'features/subscriptions/providers/subscriptionPlanProvider.dart';
 
 // ---- Entry Point of Flutter App ----
@@ -49,6 +50,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CourseEnrollmentProvider()),
         ChangeNotifierProvider(create: (_) => LessonQuestionAnswerProvider()),
         ChangeNotifierProvider(create: (_) => CourseExamProvider()),
+        ChangeNotifierProvider(create: (_) => RecommendedCourseByIdProvider()),
 
         // ChangeNotifierProvider(create: (_) => LessonProvider()),
 

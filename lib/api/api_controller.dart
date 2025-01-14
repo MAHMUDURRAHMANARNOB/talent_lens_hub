@@ -17,6 +17,7 @@ import '../features/authentication/models/login_response.dart';
 import '../features/courses/DataModel/CourseContentDataModel.dart';
 import '../features/courses/DataModel/CourseEnrollDataModel.dart';
 import '../features/courses/DataModel/VideoQuestionResponseDataModel.dart';
+import '../features/courses/RecommandedCoursesForUser/recommendedCoursesDataModel.dart';
 import '../features/subscriptions/datamodels/subscriptionPlansDataModel.dart';
 
 class ApiController {
@@ -850,6 +851,31 @@ class ApiController {
       return json.decode(utf8Body);
     } else {
       throw Exception("Failed to fetch data: ${response.body}");
+    }
+  }
+
+//   RecommendedCourses
+  Future<RecommendedCoursesDataModel> recommendCoursesForUser(
+      String userId) async {
+    try {
+      var response = await http.post(
+        Uri.parse("$baseUrl/recommendCoursesforuser"),
+        body: {'userid': userId},
+      );
+
+      if (response.statusCode == 200) {
+        // Decode response body with UTF-8
+        var decodedResponse = json.decode(utf8.decode(response.bodyBytes));
+
+        // Parse the response using the RecommendedCoursesDataModel
+        return RecommendedCoursesDataModel.fromJson(decodedResponse);
+      } else {
+        // Handle non-200 status codes
+        throw Exception("Error: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Handle exceptions
+      throw Exception("Failed to load courses: $e");
     }
   }
 }

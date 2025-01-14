@@ -2,8 +2,11 @@ name: talent_lens_hub
 description: "Unlocking Potential, Illuminating Futures"
 publish_to: 'none'
 #version: 1.0.0+1
-#version: 1.0.1+2 #icon issue fixed + name issue fixed
-version: 1.0.2+3 #icon issue fixed + name issue fixed
+#version: 1.0.1+2 # icon issue fixed + name issue fixed
+#version: 1.0.2+3 # icon issue fixed + name issue fixed
+version: 1.0.3+4 # Course Exam Implemented + tools response regeneration + profile bug fix
+
+
 
 environment:
   sdk: '>=3.4.0 <4.0.0'

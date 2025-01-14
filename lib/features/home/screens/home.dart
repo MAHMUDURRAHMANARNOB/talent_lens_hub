@@ -5,6 +5,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:talent_lens_hub/features/courses/DataModel/TrainingCategoryDataModel.dart';
+import 'package:talent_lens_hub/features/courses/RecommandedCoursesForUser/recommendedCoursebyIdProvider.dart';
+import 'package:talent_lens_hub/features/courses/RecommandedCoursesForUser/recommendedCoursesDataModel.dart';
 import 'package:talent_lens_hub/features/courses/Screens/enrolledCourses.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/ai_helper_container.dart';
 import 'package:talent_lens_hub/features/home/screens/widgets/pd_containers.dart';
@@ -33,6 +35,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  RecommendedCourseByIdProvider recommendedCourseByIdProvider =
+      RecommendedCourseByIdProvider();
   late int userId;
   late String userName;
   late EnrolledCoursesProvider enrolledCoursesProvider =
@@ -245,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: TSizes.defaultSpace / 2),
                     child: SizedBox(
@@ -282,6 +286,125 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+
+                  SizedBox(height: TSizes.defaultSpace / 2),
+
+                  //   Recommended Courses
+                  Visibility(
+                    visible: false,
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: TSizes.defaultSpace / 2,
+                              vertical: 6.0),
+                          child: TSectionHeading(
+                            title: "Recommended Courses",
+                            showActionButton: false,
+                            // buttonTitle: "View All",
+                            // onPressed: () {},
+                            textColor: TColors.primaryColor,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                              left: TSizes.defaultSpace / 2,
+                              top: 6.0,
+                              bottom: 6.0),
+                          width: double.infinity,
+                          height: 100,
+                          child: FutureBuilder<void>(
+                            future: recommendedCourseByIdProvider
+                                .fetchRecommendedCourses(userId.toString()),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                // Show a loading indicator while waiting for the response
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                // Show an error message if the API call fails
+                                return Center(
+                                    child: Text('Error: ${snapshot.error}'));
+                              } else if (snapshot.hasData) {
+                                // Handle the success scenario
+                                final apiResponse =
+                                    recommendedCourseByIdProvider
+                                        .recommendedCourseById;
+                                if (apiResponse!.courses != null) {
+                                  final courses = apiResponse.courses!;
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: courses.length,
+                                    // Disable scrolling of ListView
+                                    itemBuilder: (context, index) {
+                                      final course = courses[index];
+                                      return GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          width: 200,
+                                          decoration: BoxDecoration(
+                                            // color: TColors.success.withOpacity(0.2),
+                                            border: Border.all(
+                                                color: TColors.primaryColor),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    course.title,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 3,
+                                                    style: const TextStyle(
+                                                      fontSize: 18.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  color: TColors.primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  // Handle the case where no courses are found (error scenario)
+                                  return Center(
+                                      child: Text(apiResponse.message ??
+                                          'No courses found'));
+                                }
+                              } else {
+                                // Handle unexpected cases
+                                return Center(
+                                    child: Text('Something went wrong'));
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
