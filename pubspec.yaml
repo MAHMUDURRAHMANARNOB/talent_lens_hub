@@ -44,6 +44,7 @@ dependencies:
   fluttertoast: ^8.2.3
   flutter_html:
   flutter_pdfview: ^1.4.0
+  permission_handler: ^11.3.1
 
 
   # Icons

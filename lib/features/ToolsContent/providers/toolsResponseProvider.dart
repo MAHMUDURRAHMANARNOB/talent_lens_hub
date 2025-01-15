@@ -6,6 +6,7 @@ import 'package:talent_lens_hub/features/ToolsContent/datamodel/CoverLetterRespo
 import 'package:talent_lens_hub/features/ToolsContent/datamodel/interviewQuestionResponseDataModel.dart';
 
 import '../../../api/api_controller.dart';
+import '../datamodel/SolveBanglaMathDataModel.dart';
 import '../datamodel/toolsResponseDataModel.dart';
 
 class ToolsResponseProvider extends ChangeNotifier {
@@ -14,6 +15,7 @@ class ToolsResponseProvider extends ChangeNotifier {
   ToolsResponseDataModel? _toolsResponse;
   InterviewQuestionsResponseDataModel? _interviewQuestionsResponseDataModel;
   CoverLetterResponseDataModel? _coverLetterResponseDataModel;
+  SolveBanglaMathDataModel? _solveBanglaMathDataModel;
 
   ToolsResponseDataModel? get toolsResponse => _toolsResponse;
 
@@ -22,6 +24,9 @@ class ToolsResponseProvider extends ChangeNotifier {
 
   CoverLetterResponseDataModel? get coverLetterResponseDataModel =>
       _coverLetterResponseDataModel;
+
+  SolveBanglaMathDataModel? get solveBanglaMathDataModel =>
+      _solveBanglaMathDataModel;
 
   Future<void> fetchMathSolutionResponse(
     int userId,
@@ -39,6 +44,28 @@ class ToolsResponseProvider extends ChangeNotifier {
     } catch (error) {
       print('Error in getToolsResponse: $error');
       throw Exception('Failed to load data. Check your network connection.');
+    }
+  }
+
+  Future<void> fetchMathImageSolutionResponse(
+    File questionImage,
+    int userId,
+    String questionText,
+  ) async {
+    print("inside fetchMathImageSolutionResponse");
+    try {
+      final response = await _apiService.getMathImageResponse(
+        questionImage,
+        userId,
+        questionText,
+      );
+      _solveBanglaMathDataModel = SolveBanglaMathDataModel.fromJson(response);
+
+      print("Response from fetchMathImageSolutionResponse: $response");
+      notifyListeners();
+    } catch (error) {
+      print('Error in fetchMathImageSolutionResponse: $error');
+      throw Exception('$error');
     }
   }
 

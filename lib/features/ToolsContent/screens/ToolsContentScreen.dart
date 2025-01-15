@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:markdown_widget/markdown_widget.dart' as MW;
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:talent_lens_hub/features/subscriptions/screens/SubscriptionPlansScreen.dart';
 
 import '../../../common/latexGenerator.dart';
 import '../../../utils/constants/colors.dart';
@@ -264,6 +265,74 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                   },
                                 ),
                                 SizedBox(height: 10.0),
+                                if (_selectedImage != null)
+                                  Visibility(
+                                    visible: _isImageSelected,
+                                    child: Stack(
+                                      children: [
+                                        ClipPath(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                              child: Image.file(
+                                                _selectedImage!,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            height: 80,
+                                            width: 80,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: GestureDetector(
+                                            onTap: _removeImage,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors
+                                                    .red, // Background color of the button
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Icon(
+                                                Icons.close,
+                                                color: Colors.white,
+                                                // Color of the icon
+                                                size: 16.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                SizedBox(height: 10.0),
+                                Visibility(
+                                  visible: widget.toolsName == "Math Solution",
+                                  child: TextButton.icon(
+                                    onPressed: () {
+                                      _showImageSourceDialog();
+                                      print(isImagePicked);
+                                      setState(() {
+                                        isImagePicked = true;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Iconsax.gallery_add,
+                                      color: TColors.secondaryColor,
+                                    ),
+                                    label: Text(
+                                      "Add Image",
+                                      style: TextStyle(
+                                          color: TColors.secondaryColor),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10.0),
                               ],
                             ),
                           ),
@@ -336,7 +405,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                 backgroundColor: TColors.primaryColor),
                             onPressed: () {
                               setState(() {
-                                if (widget.toolsName == "Career Counselor") {
+                                if (widget.toolsName == "Career Counselor" &&
+                                    _question.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateCareerCounselorResponse(
                                       context,
@@ -352,7 +422,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                   interestedTopicsTextFieldController.clear();
                                   experienceTextFieldController.clear();
                                 } else if (widget.toolsName ==
-                                    "Math Solution") {
+                                        "Math Solution" &&
+                                    _question.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateMathSolutionResponse(
                                       context,
@@ -360,7 +431,20 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                       _question,
                                     ),
                                   );
-                                } else if (widget.toolsName == "Life Coach") {
+                                } else if (widget.toolsName ==
+                                        "Math Solution" &&
+                                    _selectedImage != null &&
+                                    isImagePicked) {
+                                  _lessonComponents.add(
+                                    generateSolveBanglaMathImageResponse(
+                                      context,
+                                      _selectedImage!,
+                                      userID,
+                                      _question,
+                                    ),
+                                  );
+                                } else if (widget.toolsName == "Life Coach" &&
+                                    _question.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateLifeCoachResponse(
                                       context,
@@ -369,7 +453,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                     ),
                                   );
                                 } else if (widget.toolsName ==
-                                    "Mental Health") {
+                                        "Mental Health" &&
+                                    _question.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateMentalHealthResponse(
                                       context,
@@ -378,7 +463,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                     ),
                                   );
                                 } else if (widget.toolsName ==
-                                    "Relationship Coach") {
+                                        "Relationship Coach" &&
+                                    _question.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateRelationshipCoachResponse(
                                       context,
@@ -386,7 +472,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                       _question,
                                     ),
                                   );
-                                } else if (widget.toolsName == "Psychology") {
+                                } else if (widget.toolsName == "Psychology" &&
+                                    _question.isNotEmpty) {
                                   _lessonComponents.add(
                                     generatePsychologyResponse(
                                       context,
@@ -395,7 +482,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                     ),
                                   );
                                 } else if (widget.toolsName ==
-                                    "Interview Questions") {
+                                        "Interview Questions" &&
+                                    _jobTitle.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateInterviewQuestionResponse(
                                         context,
@@ -404,7 +492,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                         _jobDescription,
                                         "10"),
                                   );
-                                } else if (widget.toolsName == "Cover Letter") {
+                                } else if (widget.toolsName == "Cover Letter" &&
+                                    _jobTitle.isNotEmpty) {
                                   _lessonComponents.add(
                                     generateCoverLetterResponse(
                                       context,
@@ -418,6 +507,7 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                                 questionTextFieldController.clear();
                                 _selectedImage = null;
                                 _isImageSelected = false;
+                                isImagePicked = false;
                                 _isReply = false;
                                 _isNewQuestion = false;
                                 _question = '';
@@ -438,7 +528,7 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                             ),
                           ),
                           const Text(
-                            "N.B: We do not store any of you personal informations",
+                            "N.B: We do not store any of you personal information",
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -582,6 +672,71 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                   },
                 ),
                 SizedBox(height: 10.0),
+                if (_selectedImage != null)
+                  Visibility(
+                    visible: _isImageSelected,
+                    child: Stack(
+                      children: [
+                        ClipPath(
+                          child: Container(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: Image.file(
+                                _selectedImage!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            height: 80,
+                            width: 80,
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: _removeImage,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors
+                                    .red, // Background color of the button
+                              ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                // Color of the icon
+                                size: 16.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                SizedBox(height: 10.0),
+                Visibility(
+                  visible: widget.toolsName == "Math Solution",
+                  child: TextButton.icon(
+                    onPressed: () {
+                      _showImageSourceDialog();
+                      print(isImagePicked);
+                      setState(() {
+                        isImagePicked = true;
+                      });
+                    },
+                    icon: Icon(
+                      Iconsax.gallery_add,
+                      color: TColors.secondaryColor,
+                    ),
+                    label: Text(
+                      "Add Image",
+                      style: TextStyle(color: TColors.secondaryColor),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0),
               ],
             ),
           ),
@@ -652,7 +807,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
             style: TextButton.styleFrom(backgroundColor: TColors.primaryColor),
             onPressed: () {
               setState(() {
-                if (widget.toolsName == "Career Counselor") {
+                if (widget.toolsName == "Career Counselor" &&
+                    _question.isNotEmpty) {
                   _lessonComponents.add(
                     generateCareerCounselorResponse(
                       context,
@@ -667,7 +823,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                   skillsTextFieldController.clear();
                   interestedTopicsTextFieldController.clear();
                   experienceTextFieldController.clear();
-                } else if (widget.toolsName == "Math Solution") {
+                } else if (widget.toolsName == "Math Solution" &&
+                    _question.isNotEmpty) {
                   _lessonComponents.add(
                     generateMathSolutionResponse(
                       context,
@@ -675,7 +832,19 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                       _question,
                     ),
                   );
-                } else if (widget.toolsName == "Life Coach") {
+                } else if (widget.toolsName == "Math Solution" &&
+                    _selectedImage != null &&
+                    isImagePicked) {
+                  _lessonComponents.add(
+                    generateSolveBanglaMathImageResponse(
+                      context,
+                      _selectedImage!,
+                      userID,
+                      _question,
+                    ),
+                  );
+                } else if (widget.toolsName == "Life Coach" &&
+                    _question.isNotEmpty) {
                   _lessonComponents.add(
                     generateLifeCoachResponse(
                       context,
@@ -683,7 +852,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                       _question,
                     ),
                   );
-                } else if (widget.toolsName == "Mental Health") {
+                } else if (widget.toolsName == "Mental Health" &&
+                    _question.isNotEmpty) {
                   _lessonComponents.add(
                     generateMentalHealthResponse(
                       context,
@@ -691,7 +861,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                       _question,
                     ),
                   );
-                } else if (widget.toolsName == "Relationship Coach") {
+                } else if (widget.toolsName == "Relationship Coach" &&
+                    _question.isNotEmpty) {
                   _lessonComponents.add(
                     generateRelationshipCoachResponse(
                       context,
@@ -699,7 +870,8 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                       _question,
                     ),
                   );
-                } else if (widget.toolsName == "Psychology") {
+                } else if (widget.toolsName == "Psychology" &&
+                    _question.isNotEmpty) {
                   _lessonComponents.add(
                     generatePsychologyResponse(
                       context,
@@ -707,12 +879,14 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                       _question,
                     ),
                   );
-                } else if (widget.toolsName == "Interview Questions") {
+                } else if (widget.toolsName == "Interview Questions" &&
+                    _jobTitle.isNotEmpty) {
                   _lessonComponents.add(
                     generateInterviewQuestionResponse(
                         context, userID, _jobTitle, _jobDescription, "10"),
                   );
-                } else if (widget.toolsName == "Cover Letter") {
+                } else if (widget.toolsName == "Cover Letter" &&
+                    _jobTitle.isNotEmpty) {
                   _lessonComponents.add(
                     generateCoverLetterResponse(
                       context,
@@ -751,7 +925,7 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
             ),
           ),
           const Text(
-            "N.B: We do not store any of you personal informations",
+            "N.B: We do not store any of you personal information",
             textAlign: TextAlign.center,
           ),
         ],
@@ -1083,6 +1257,203 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
                           MaterialPageRoute(
                               builder: (context) => const PackagesScreen()),
                         );*/
+                      },
+                      child: const Text(
+                        "Buy Subscription",
+                        style: TextStyle(
+                          color: TColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        }
+      },
+    );
+  }
+
+  Widget generateSolveBanglaMathImageResponse(
+    BuildContext context,
+    File questionImage,
+    int userid,
+    String question,
+  ) {
+    final Future<void> responseFuture =
+        toolsResponseProvider.fetchMathImageSolutionResponse(
+      questionImage,
+      userid,
+      question,
+    );
+    return FutureBuilder<void>(
+      future: responseFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          /*return const SpinKitThreeInOut(
+            color: TColors.primaryColor,
+          ); */
+          return Container(
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
+                  child: Image.asset(
+                    "assets/images/animations/loader_tlh.gif",
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+                SizedBox(
+                  child: Shimmer.fromColors(
+                    baseColor: TColors.primaryColor,
+                    highlightColor: Colors.white,
+                    child: const Text(
+                      'Preparing...',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ); // Loading state
+        } else if (snapshot.hasError) {
+          return Container(
+            margin: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: TColors.grey,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  toolsResponseProvider.solveBanglaMathDataModel != null &&
+                          toolsResponseProvider
+                                  .solveBanglaMathDataModel!.message !=
+                              null
+                      ? Text(
+                          "Sorry: ${toolsResponseProvider.solveBanglaMathDataModel!.message}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : const Text(
+                          "Sorry: You ran out of your Homework-tokens or your subscription is Expired. "),
+                  toolsResponseProvider.solveBanglaMathDataModel != null &&
+                          toolsResponseProvider
+                                  .solveBanglaMathDataModel!.errorCode ==
+                              201
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: TColors.primaryBackground),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SubscriptionListScreen()),
+                            );
+                          },
+                          child: const Text(
+                            "Buy Subscription",
+                            style: TextStyle(
+                              color: TColors.primaryColor,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
+          );
+        } else {
+          if (toolsResponseProvider.solveBanglaMathDataModel != null &&
+              toolsResponseProvider.solveBanglaMathDataModel!.errorCode ==
+                  200) {
+            final response = toolsResponseProvider.solveBanglaMathDataModel;
+            final lessonAnswer = response!.answer;
+            /*final lessonAnswer =
+                utf8.decode(lessonAnswerEncoded!.runes.toList());*/
+            final ticketId = response.ticketId!;
+
+            return Container(
+              // Your 'T' case UI code
+              margin: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: TColors.primaryColor.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /*Top Part*/
+
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: const EdgeInsets.all(5.0),
+                    width: double.infinity,
+                    height: 100,
+                    child: Image.file(
+                      questionImage,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Text("$question"),
+                  ),
+                  MW.MarkdownWidget(
+                    data: lessonAnswer!,
+                    shrinkWrap: true,
+                    selectable: true,
+                    // config: MarkdownConfig.darkConfig,
+                    markdownGenerator: MarkdownGenerator(
+                        generators: [latexGenerator],
+                        inlineSyntaxList: [LatexSyntax()]),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Container(
+              margin: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: TColors.primaryBackground,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Sorry: ${toolsResponseProvider.toolsResponse!.message}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: TColors.primaryBackground),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionListScreen()),
+                        );
                       },
                       child: const Text(
                         "Buy Subscription",

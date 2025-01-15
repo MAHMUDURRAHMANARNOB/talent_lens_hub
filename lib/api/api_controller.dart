@@ -610,6 +610,45 @@ class ApiController {
     }
   }
 
+  Future<Map<String, dynamic>> getMathImageResponse(
+    File questionImage,
+    int userid,
+    String? questiontext,
+  ) async {
+    const url = '$baseUrl/SolvebanglaMath/';
+    print("Posting in api service $url $questionImage ,$userid, $questiontext");
+
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.fields['userid'] = userid.toString();
+    request.fields['questiontext'] = questiontext.toString();
+    request.files.add(
+        await http.MultipartFile.fromPath('mathPhoto', questionImage!.path));
+    print("QUESTIONIMAGEPATH: ${questionImage.path}");
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Image uploaded successfully');
+      final responseString =
+          await response.stream.transform(utf8.decoder).join();
+      final responseCheck = json.decode(responseString);
+      // final responseCheck = json.decode(await response.stream.bytesToString());
+      print("Response check -> $responseCheck");
+      /*if (responseCheck["errorcode"] == 200) {
+        print('200');*/
+      return responseCheck;
+      /*} else {
+        print('else msg');
+        throw Exception(responseCheck["message"]);
+      }*/
+      /*print("Response in getImageToolsResponse " +
+          await response.stream.bytesToString());*/
+    } else {
+      print('Failed to upload image. Status code: ${response.statusCode}');
+      throw ("Failed getImageToolsResponse ${response.statusCode}");
+    }
+  }
+
   Future<Map<String, dynamic>> getCareerCounselorResponse(
     int userid,
     String problemText,
