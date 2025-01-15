@@ -1389,7 +1389,7 @@ class _ToolsContentScreenState extends State<ToolsContentScreen> {
               margin: const EdgeInsets.all(10.0),
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                color: TColors.primaryColor.withOpacity(0.5),
+                color: TColors.primaryColor.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Column(

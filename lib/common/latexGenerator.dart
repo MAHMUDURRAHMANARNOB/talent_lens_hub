@@ -56,7 +56,7 @@ class LatexNode extends SpanNode {
       content,
       mathStyle: MathStyle.text,
       textStyle: style.copyWith(
-        color: Colors.white,
+        color: Colors.black,
         overflow: TextOverflow.ellipsis,
       ),
       textScaleFactor: 1,
