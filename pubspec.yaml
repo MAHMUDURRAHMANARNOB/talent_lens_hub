@@ -44,7 +44,10 @@ dependencies:
   fluttertoast: ^8.2.3
   flutter_html:
   flutter_pdfview: ^1.4.0
+  dio: ^5.7.0
   permission_handler: ^11.3.1
+  path_provider: ^2.1.5
+  open_file: ^3.5.10
 
 
   # Icons
@@ -93,6 +96,7 @@ flutter:
     - assets/images/onboarding_gifs/
     - assets/images/animations/
     - assets/images/dashboard_images/
+    - assets/images/animations/download/
 
   # ---------- LOCAL FONTS ----------#
   fonts:

@@ -45,6 +45,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
     final dark = THelperFunction.isDarkMode(context);
     userId = Provider.of<AuthProvider>(context, listen: false).user!.id;
     late bool isEnrolled = widget.isEnrolled;
+    late String examAttempts = "";
     late bool isExamTaken = false;
     return Scaffold(
       appBar: AppBar(
@@ -213,6 +214,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
                           width: double.infinity,
                           padding: EdgeInsets.all(8.0),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
                                 child: Row(
@@ -256,6 +258,7 @@ class _LessonListScreenState extends State<LessonListScreen> {
                               ),
                               Container(
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Icon(Icons.check_circle_outline_outlined,
                                         size: 24),
@@ -293,63 +296,138 @@ class _LessonListScreenState extends State<LessonListScreen> {
                             isEnrolled =
                                 checkCourseEnrollmentProvider.courseData !=
                                     null;
+                            examAttempts = checkCourseEnrollmentProvider
+                                .courseData!.examAttempt
+                                .toString();
                             // print(
                             //     "isExamTaken ${widget.courseId} - $isExamTaken");
                             return isExamTaken == "Y"
-                                ? ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: TColors.success,
-                                      elevation: 6,
-                                      side: BorderSide(color: TColors.success),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => CertificatePreview(
-                                              pdfPath:
-                                                  checkCourseEnrollmentProvider
-                                                      .courseData!
-                                                      .certificateFile!),
+                                ? Visibility(
+                                    visible: courseContent[0]
+                                            .isCertificateAvailable ==
+                                        "Y",
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: TColors.success,
+                                        elevation: 6,
+                                        side:
+                                            BorderSide(color: TColors.success),
+                                      ),
+                                      onPressed: () {
+                                        if (checkCourseEnrollmentProvider
+                                                .courseData!.certificateFile !=
+                                            null) {
+                                          print(checkCourseEnrollmentProvider
+                                              .courseData!.certificateFile!
+                                              .toString());
+                                          /*Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CertificatePreview(
+                                                      pdfPath:
+                                                          checkCourseEnrollmentProvider
+                                                              .courseData!
+                                                              .certificateFile!),
+                                            ),
+                                          );*/
+                                          // Show the dialog to display download progress
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            // Prevent closing the dialog until download completes
+                                            builder: (BuildContext context) {
+                                              return DownloadProgressDialog(
+                                                pdfPath:
+                                                    checkCourseEnrollmentProvider
+                                                        .courseData!
+                                                        .certificateFile!,
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          print("No file found");
+                                        }
+                                      },
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          "Download Certificate",
+                                          textAlign: TextAlign.center,
                                         ),
-                                      );
-                                    },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: Text(
-                                        "Download Certificate",
-                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   )
                                 : Visibility(
                                     visible: isEnrolled,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: TColors.secondaryColor,
-                                        elevation: 6,
-                                        side: BorderSide(
-                                            color: TColors.secondaryColor),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CourseExamInstructionScreen(
-                                              courseName: widget.courseTitle,
-                                              courseId: widget.courseId,
+                                    child: Column(
+                                      children: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                TColors.secondaryColor,
+                                            elevation: 6,
+                                            side: BorderSide(
+                                                color: TColors.secondaryColor),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CourseExamInstructionScreen(
+                                                  courseName:
+                                                      widget.courseTitle,
+                                                  courseId: widget.courseId,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              "Start Exam",
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                        );
-                                      },
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Text(
-                                          "Start Exam",
-                                          textAlign: TextAlign.center,
                                         ),
-                                      ),
+                                        SizedBox(height: 10),
+                                        Container(
+                                          width: double.infinity,
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.receipt_long_sharp,
+                                                      size: 24,
+                                                      color: TColors
+                                                          .secondaryColor,
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                      "Exam Attepted: ",
+                                                    ),
+                                                    Text(
+                                                      "$examAttempts / 5",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: TColors
+                                                              .primaryColor),
+                                                      // textAlign: TextAlign.center,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                           },

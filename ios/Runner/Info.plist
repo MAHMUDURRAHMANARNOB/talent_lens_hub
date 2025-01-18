@@ -38,6 +38,16 @@
         <string>This app needs access to save photos to your photo library.</string>
         <key>NSSpeechRecognitionUsageDescription</key>
         <string>This app needs access to speech recognition services.</string>
+        <key>UIFileSharingEnabled</key>
+        <true/>
+        <key>LSSupportsOpeningDocumentsInPlace</key>
+        <true/>
+
+        <key>NSAppTransportSecurity</key>
+        <dict>
+            <key>NSAllowsArbitraryLoads</key>
+            <true/>
+        </dict>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
